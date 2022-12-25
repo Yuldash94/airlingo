@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #F4F4F4;
+}
+
+#root{
+  min-width: 320px;
+  max-width: 425px;
+  width: 100vw;
+  height: 100%;
+}
