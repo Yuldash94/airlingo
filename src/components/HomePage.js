@@ -35,7 +35,7 @@ export default function HomePage({user, info}) {
                                   <div className='continue_btn'>
                                     <p>Continue with: <br/><b>{item.btn_title}</b></p>
                                   </div>
-                                  <Link to='/continue' title={item.btn_title}>
+                                  <Link to='/messages' title={item.btn_title}>
                                     <SlArrowRight values={{color: '#11273E', size: '24px'}}/>
                                   </Link>
                               </div>

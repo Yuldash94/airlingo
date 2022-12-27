@@ -1,6 +1,7 @@
 import React from 'react'
 import { RxDotFilled } from 'react-icons/rx'
 import { SlArrowRight } from 'react-icons/sl'
+import { Link } from 'react-router-dom'
 import './ProfilePage.css'
 
 export default function ProfilePage({user, info, chart, setChart}) {
@@ -58,7 +59,9 @@ export default function ProfilePage({user, info, chart, setChart}) {
                     <img src={'./img/home/'+item.img} alt=' '></img>
                     <div>
                       <p>{item.title}</p>
-                      <SlArrowRight values={{color: '#11273E', size: '24px'}}/>
+                      <Link to='/continue'>
+                        <SlArrowRight values={{color: '#11273E', size: '24px'}}/>
+                      </Link>
                     </div>
                   </div>
                 ))}

@@ -1,0 +1,156 @@
+.messages {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    background: #F4F4F4;
+    margin-top: 30px;
+}
+
+.close {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.close {
+    width: 100%;
+    color: #FFFFFF;
+    font-size: 30px;
+    position: absolute;
+}
+
+.close * {
+    color: #FFFFFF;
+}
+
+.messages_head {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.messages_head > img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+.messages_head > h3 {
+    width: 100%;
+    font-family: 'Gilroy-Bold';
+    font-size: 24px;
+    color: #11273E;
+    text-align: center;
+}
+
+.messages_list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+.message {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Gilroy-Medium';
+    font-size: 19px;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+}
+
+
+.message p {
+    padding: 0;
+    margin: 7px;
+    align-self: flex-start;
+}
+
+.message_left {
+    align-self: flex-start;
+    background: #E6A084;
+    color: #11273E;
+    border-radius: 5px 5px 5px 0px;
+}
+
+.message_left::after, .message_left::before {
+    content: '';
+    position: absolute;
+    background: #E6A084;
+    left: 3px;
+    bottom: -8px;
+    width: 15px;
+    height: 15px;
+    z-index: -1;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    border-radius: 0 0 2px 0;
+}
+
+.message_left::before {
+    z-index: 1;
+}
+
+.message_right {
+    align-self: flex-end;
+    background: #11273E;
+    border-radius: 5px 5px 0px 5px; 
+}
+
+.message_right::after, .message_right::before {
+    content: '';
+    position: absolute;
+    background: #11273E;
+    right: 3px;
+    bottom: -8px;
+    width: 15px;
+    height: 15px;
+    z-index: -1;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    border-radius: 0 0 2px 0;
+}
+
+.message_right::before {
+    z-index: 1;
+}
+
+.message_right > p {
+    color: #FFFFFF;
+}
+
+.message_center {
+    align-self: center;
+    background: #11273E;
+    border-radius: 30px;
+    color: #FFFFFF;
+    align-items: center;
+    text-align: center;
+}
+
+.message_center > p {
+    align-self: center;
+}
+
+.audio {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    color: #11273E;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 8px;
+}

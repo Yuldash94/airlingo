@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode'
 import { Routes, Route } from 'react-router-dom';
+import { GoogleLogin,useGoogleLogin } from '@react-oauth/google'
 import Layout from './components/Layout';
 import HomePage from './components/HomePage';
 import LibraryPage from './components/LibraryPage';
@@ -9,6 +10,7 @@ import Continue from './components/Continue';
 
 
 import './App.css';
+import Messages from './components/Messages';
 
 function App() {
   const [user, setUser] = useState({})
@@ -86,45 +88,80 @@ function App() {
       level: '10%',
     },
   ])
-  function handleCallbackResponse(response) {
-    console.log('Encoded JWT ID token:' + response.credential);
-    let userObject = jwt_decode(response.credential)
-    console.log(userObject);
-    setUser(userObject)
-    document.getElementById('signInDiv').hidden = true
-  }
+  // function handleCallbackResponse(response) {
+  //   console.log('Encoded JWT ID token:' + response.credential);
+  //   let userObject = jwt_decode(response.credential)
+  //   console.log(userObject);
+  //   console.log(response);
+  //   setUser(userObject)
+  //   document.getElementById('signInDiv').hidden = true
+  // }
 
-  function handleSignOut(event) {
-    setUser({})
-    window.google.accounts.id.disableAutoSelect()
-    document.getElementById('signInDiv').hidden = false
-  }
+  // function handleSignOut(event) {
+  //   setUser({})
+  //   window.google.accounts.id.disableAutoSelect()
+  //   document.getElementById('signInDiv').hidden = false
+  // }
 
-  useEffect(() =>{
-    // global google
-    window.google.accounts.id.initialize({
-      client_id: '268425863623-r7oavatem0cs8df8n7j9mq4lc9iq2l21.apps.googleusercontent.com',
-      callback: handleCallbackResponse
-    })
+  // useEffect(() =>{
+  //   // global google
+  //   window.google.accounts.id.initialize({
+  //     client_id: '268425863623-r7oavatem0cs8df8n7j9mq4lc9iq2l21.apps.googleusercontent.com',
+  //     callback: handleCallbackResponse
+  //   })
 
-    window.google.accounts.id.renderButton(
-      document.getElementById('signInDiv'),
-      {
-        theme: 'filled-black',
-        size: 'medium',
-        text: 'signin'
-      }
-    )
-  },[])
+  //   window.google.accounts.id.renderButton(
+  //     document.getElementById('signInDiv'),
+  //     {
+  //       theme: 'filled-black',
+  //       size: 'medium',
+  //       text: 'signin'
+  //     }
+  //   )
+  // },[])
 
+  // const login = useGoogleLogin({
+  //   onSuccess: ( codeResponse) => {console.log('TOKEN',codeResponse)
+  //   console.log('codeResponse',codeResponse)
+  //   // const token = tokenResponse.access_token
+  //   setToken(token)   
+  // },
+  // flow: 'implicit | auth-code',
+  // scope: '',
+  // enable_serial_consent: true,
+  // prompt: 'consent',
+  // hint: '',
+  // });
+  const [token,setToken] = useState ('')
   return (
     <div className="App">
       { !Object.keys(user).length && 
             <div id='App_greetings'>
             <img className='logo' src='./img/airlingo_logo.png' alt='logo'></img>
             <p className='companion'>Your AI training companion</p>
-            <div id='signInDiv'></div>
-            { Object.keys(user).length !== 0 && 
+            
+            <div id='signInDiv'>
+              {/* <div onClick={() => login()}>Login</div> */}
+            <GoogleLogin
+              onSuccess={credentialResponse => {
+                console.log(credentialResponse);
+                console.log(jwt_decode(credentialResponse.credential))
+                setUser(jwt_decode(credentialResponse.credential))
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+              useOneTap
+              theme='outline'
+              size='small'
+              text='signin'
+              login_uri='https://dev.airlingo.io/api/topic/'
+              native_login_uri='https://dev.airlingo.io/api/topic/'
+              native_callback={(res) => console.log('native_callback', res)}
+              nonce=''
+            />
+            </div>
+            {/* { Object.keys(user).length !== 0 && 
               <button onClick={(e) => handleSignOut(e)}>Sign Out</button>
             }
             { Object.keys(user).length !== 0 && 
@@ -132,7 +169,7 @@ function App() {
                 <img src={user.picture} alt="user_image"></img>
                 <h3>{user.name}</h3>
               </div> 
-            }
+            } */}
             <p className='or '>or</p>
             <a className='create_account' href=' # ' >Create an account</a>
           </div>
@@ -146,6 +183,7 @@ function App() {
               <Route path='/library' element={<LibraryPage user={user}/>} />
               <Route path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart}/>} />
               <Route path='/continue' element={<Continue info={pageInfo}/>}/>
+              <Route path='/messages' element={<Messages token={token} user={user} info={pageInfo}/>}/>
             </Route>
           </Routes>
         </>
