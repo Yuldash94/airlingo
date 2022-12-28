@@ -133,6 +133,7 @@ function App() {
   // hint: '',
   // });
   const [token,setToken] = useState ('')
+  const [greeting, setGreeting] = useState(true) 
   return (
     <div className="App">
       { !Object.keys(user).length && 
@@ -183,7 +184,7 @@ function App() {
               <Route path='/library' element={<LibraryPage user={user}/>} />
               <Route path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart}/>} />
               <Route path='/continue' element={<Continue info={pageInfo}/>}/>
-              <Route path='/messages' element={<Messages token={token} user={user} info={pageInfo}/>}/>
+              <Route path='/messages' element={<Messages token={token} user={user} info={pageInfo} setGreeting={setGreeting} greeting={greeting}/>}/>
             </Route>
           </Routes>
         </>

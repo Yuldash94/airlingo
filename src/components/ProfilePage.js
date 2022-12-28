@@ -59,7 +59,7 @@ export default function ProfilePage({user, info, chart, setChart}) {
                     <img src={'./img/home/'+item.img} alt=' '></img>
                     <div>
                       <p>{item.title}</p>
-                      <Link to='/continue'>
+                      <Link to='/continue' item={item}>
                         <SlArrowRight values={{color: '#11273E', size: '24px'}}/>
                       </Link>
                     </div>

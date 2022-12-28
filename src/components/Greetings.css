@@ -1,0 +1,106 @@
+.greetings {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background: #F4F4F4;
+    z-index: 4;
+}
+
+.greetings_head {
+    width: 100%;
+    height: 250px;
+    background: url(/public/img/greetings.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.greetings_head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center
+}
+
+.greetings_head > div{
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.greetings_load {
+    width: 80%;
+    height: 5px;
+    border-radius: 10px;
+    background: #D9D9D9;
+}
+
+.greetings_load_full {
+    width: 15%;
+    height: 5px;
+    border-radius: 10px;
+    background: #E7A23A;
+}
+
+
+.greetings_close {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #FFFFFF;
+    background: #999999;
+}
+
+.greetings_inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+    padding: 10px;
+}
+
+.greetings_inner > p{
+    font-family: 'Gilroy-Medium';
+    font-size: 19px;
+    color: #11273E;
+}
+
+.equalizer {
+    width: 80px;
+    height: 30px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 37px;
+}
+
+.equalizer_reciption {
+    color: #FFFFFF;
+    background: #11273E;
+}
+
+.equalizer_guest {
+    background: #E6A084;
+    color: #11273E;
+}
+
+
+.skip {
+    text-align: center;
+    font-family: 'Gilroy-Medium';
+    font-size: 24px;
+    background: #11273E;
+    border-radius: 20px;
+    color: #FFFFFF;
+    position: fixed;
+    bottom: 100px;
+    padding: 5px;
+    width: 85px;
+}

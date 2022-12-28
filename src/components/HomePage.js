@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 
 export default function HomePage({user, info}) {
-  
+
 
   return (
     <div className='home_page'>
@@ -35,7 +35,7 @@ export default function HomePage({user, info}) {
                                   <div className='continue_btn'>
                                     <p>Continue with: <br/><b>{item.btn_title}</b></p>
                                   </div>
-                                  <Link to='/messages' title={item.btn_title}>
+                                  <Link to='/messages'>
                                     <SlArrowRight values={{color: '#11273E', size: '24px'}}/>
                                   </Link>
                               </div>

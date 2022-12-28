@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import  { TiDeleteOutline } from 'react-icons/ti'
-import { AiFillSound } from 'react-icons/ai'
+import  { RxCross2 } from 'react-icons/rx'
+import { AiFillSound, AiFillAudio } from 'react-icons/ai'
+import { FaRegKeyboard } from 'react-icons/fa'
+import { TbBulb } from 'react-icons/tb'
 import { Link } from 'react-router-dom'
 import './Messages.css'
 import jwtDecode from 'jwt-decode'
+import Greetings from './Greetings'
 
-export default function Messages( {user, token}) {
+export default function Messages( {user, token, greeting, setGreeting}) {
     const teacher = {
         id: 1 ,
         first_name: 'Alec',
@@ -101,7 +104,7 @@ export default function Messages( {user, token}) {
             "text": "Message text is here"
         },
     ])
-    
+
     // const url = 'https://dev.airlingo.io/api/topics/'
     // useEffect(() => {
     //     fetch(`${url}${user.jti}/messages`)
@@ -109,30 +112,51 @@ export default function Messages( {user, token}) {
     //     .then (rej => console.log('rej', rej))
     // })
     
+
+
   return (
-    <div className='messages'>
-        <div className='close'>
-            <Link to='/home'>
-                <TiDeleteOutline />
-            </Link>
-        </div>
-        <div className='messages_head'>
-            <img src={user.picture} alt='user'></img>
-            <h3>{user.name}!</h3>
-        </div>
-        <div className='messages_list'>
-            {messages.map(message => 
-                <div key={message.creationTime} className={message.type === 'FromCustomer' ? 'message message_right' : message.type==='FromUser' ? 'message message_left' : 'message message_center'}>
-                    <p>{message.text}</p>
-                    {message.type === 'FromUser' || message.type === 'FromCustomer' ? 
-                                    (<div className='audio'>
-                                        <AiFillSound/>
-                                    </div>)
-                                    : ''
-                    }
-                </div>    
-            )}
-        </div>
-    </div>
+    <>
+        {greeting ? 
+            <Greetings greeting={greeting} setGreeting={setGreeting}/>
+            :
+            <div className='messages'>
+            <div className='close'>
+                <Link to='/home'>
+                    <div className='messages_close'>
+                        <RxCross2 />
+                    </div>
+                </Link>
+            </div>
+            <div className='messages_head'>
+                <img src={user.picture} alt='user'></img>
+                <h3>{user.name}!</h3>
+            </div>
+            <div className='messages_list'>
+                {messages.map(message => 
+                    <div key={message.creationTime} className={message.type === 'FromCustomer' ? 'message message_right' : message.type==='FromUser' ? 'message message_left' : 'message message_center'}>
+                        <p>{message.text}</p>
+                        {message.type === 'FromUser' || message.type === 'FromCustomer' ? 
+                                        (<div className='audio'>
+                                            <AiFillSound/>
+                                        </div>)
+                                        : ''
+                        }
+                    </div>    
+                )}
+            </div>
+            <div className='messages_btns'>
+                        <div className='keyboard'>
+                            <FaRegKeyboard/>
+                        </div>
+                        <div className='recording'>
+                            <AiFillAudio/>
+                        </div>
+                        <div className='hint'>
+                            <TbBulb/>
+                        </div>
+            </div>
+            </div>
+        }
+    </>
   )
 }

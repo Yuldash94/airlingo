@@ -5,7 +5,7 @@ import {BsCircle} from 'react-icons/bs'
 import './Continue.css'
 
 
-export default function Continue({info}) {
+export default function Continue({info, item}) {
 
     const lessons = [
         {
