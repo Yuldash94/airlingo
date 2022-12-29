@@ -6,17 +6,16 @@ import { FaRegKeyboard } from 'react-icons/fa'
 import { TbBulb } from 'react-icons/tb'
 import { Link } from 'react-router-dom'
 import './Messages.css'
-import jwtDecode from 'jwt-decode'
 import Greetings from './Greetings'
 
 export default function Messages( {user, token, greeting, setGreeting}) {
-    const teacher = {
-        id: 1 ,
-        first_name: 'Alec',
-        second_name: 'Underwood',
-        full_name: 'Alec Underwood',
-        picture: 'alec.png'
-    }
+    // const teacher = {
+    //     id: 1 ,
+    //     first_name: 'Alec',
+    //     second_name: 'Underwood',
+    //     full_name: 'Alec Underwood',
+    //     picture: 'alec.png'
+    // }
 
     const [messages, setMessages] = useState([
         {
@@ -105,12 +104,12 @@ export default function Messages( {user, token, greeting, setGreeting}) {
         },
     ])
 
-    // const url = 'https://dev.airlingo.io/api/topics/'
-    // useEffect(() => {
-    //     fetch(`${url}${user.jti}/messages`)
-    //     .then(res => console.log('res', res.json()))
-    //     .then (rej => console.log('rej', rej))
-    // })
+    const url = 'https://dev.airlingo.io/api/topics/'
+    useEffect(() => {
+        fetch(`${url}${token}`)
+        .then(res => console.log('res', res.json()))
+        .then (rej => console.log('rej', rej))
+    })
     
 
 
@@ -122,7 +121,7 @@ export default function Messages( {user, token, greeting, setGreeting}) {
             <div className='messages'>
             <div className='close'>
                 <Link to='/home'>
-                    <div className='messages_close'>
+                    <div className='messages_close' onClick={() => setGreeting(true)}>
                         <RxCross2 />
                     </div>
                 </Link>
@@ -145,15 +144,15 @@ export default function Messages( {user, token, greeting, setGreeting}) {
                 )}
             </div>
             <div className='messages_btns'>
-                        <div className='keyboard'>
-                            <FaRegKeyboard/>
-                        </div>
-                        <div className='recording'>
-                            <AiFillAudio/>
-                        </div>
-                        <div className='hint'>
-                            <TbBulb/>
-                        </div>
+                <div className='keyboard'>
+                    <FaRegKeyboard/>
+                </div>
+                <div className='recording'>
+                    <AiFillAudio/>
+                </div>
+                <div className='hint'>
+                    <TbBulb/>
+                </div>
             </div>
             </div>
         }

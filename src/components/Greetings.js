@@ -6,7 +6,6 @@ import './Greetings.css'
 export default function Greetings( {greeting, setGreeting}) {
   const [skip, setSkip] = useState(0)
   function showNextGreet() {
-    console.log(skip);
     setSkip(skip + 1)
     if (skip === 5) {
       setGreeting(false)

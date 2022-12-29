@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import jwt_decode from 'jwt-decode'
 import { Routes, Route } from 'react-router-dom';
-import { GoogleLogin,useGoogleLogin } from '@react-oauth/google'
+import { GoogleLogin } from '@react-oauth/google'
 import Layout from './components/Layout';
 import HomePage from './components/HomePage';
 import LibraryPage from './components/LibraryPage';
@@ -88,52 +88,10 @@ function App() {
       level: '10%',
     },
   ])
-  // function handleCallbackResponse(response) {
-  //   console.log('Encoded JWT ID token:' + response.credential);
-  //   let userObject = jwt_decode(response.credential)
-  //   console.log(userObject);
-  //   console.log(response);
-  //   setUser(userObject)
-  //   document.getElementById('signInDiv').hidden = true
-  // }
 
-  // function handleSignOut(event) {
-  //   setUser({})
-  //   window.google.accounts.id.disableAutoSelect()
-  //   document.getElementById('signInDiv').hidden = false
-  // }
-
-  // useEffect(() =>{
-  //   // global google
-  //   window.google.accounts.id.initialize({
-  //     client_id: '268425863623-r7oavatem0cs8df8n7j9mq4lc9iq2l21.apps.googleusercontent.com',
-  //     callback: handleCallbackResponse
-  //   })
-
-  //   window.google.accounts.id.renderButton(
-  //     document.getElementById('signInDiv'),
-  //     {
-  //       theme: 'filled-black',
-  //       size: 'medium',
-  //       text: 'signin'
-  //     }
-  //   )
-  // },[])
-
-  // const login = useGoogleLogin({
-  //   onSuccess: ( codeResponse) => {console.log('TOKEN',codeResponse)
-  //   console.log('codeResponse',codeResponse)
-  //   // const token = tokenResponse.access_token
-  //   setToken(token)   
-  // },
-  // flow: 'implicit | auth-code',
-  // scope: '',
-  // enable_serial_consent: true,
-  // prompt: 'consent',
-  // hint: '',
-  // });
   const [token,setToken] = useState ('')
   const [greeting, setGreeting] = useState(true) 
+  
   return (
     <div className="App">
       { !Object.keys(user).length && 
@@ -146,6 +104,7 @@ function App() {
             <GoogleLogin
               onSuccess={credentialResponse => {
                 console.log(credentialResponse);
+                setToken(credentialResponse.clientId)
                 console.log(jwt_decode(credentialResponse.credential))
                 setUser(jwt_decode(credentialResponse.credential))
               }}
@@ -162,15 +121,6 @@ function App() {
               nonce=''
             />
             </div>
-            {/* { Object.keys(user).length !== 0 && 
-              <button onClick={(e) => handleSignOut(e)}>Sign Out</button>
-            }
-            { Object.keys(user).length !== 0 && 
-              <div>
-                <img src={user.picture} alt="user_image"></img>
-                <h3>{user.name}</h3>
-              </div> 
-            } */}
             <p className='or '>or</p>
             <a className='create_account' href=' # ' >Create an account</a>
           </div>
