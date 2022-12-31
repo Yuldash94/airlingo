@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import jwt_decode from 'jwt-decode'
 import { Routes, Route } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google'
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
 import Layout from './components/Layout';
 import HomePage from './components/HomePage';
 import LibraryPage from './components/LibraryPage';
@@ -88,9 +88,19 @@ function App() {
       level: '10%',
     },
   ])
-
+  const [data, setData] = useState({})
   const [token,setToken] = useState ('')
   const [greeting, setGreeting] = useState(true) 
+  
+  const login = useGoogleLogin({
+    onSuccess: tokenResponse => {
+      console.log(tokenResponse)
+      setData(tokenResponse)
+      // setToken(tokenResponse.access_token)
+    },
+  });
+
+  
   
   return (
     <div className="App">
@@ -100,11 +110,13 @@ function App() {
             <p className='companion'>Your AI training companion</p>
             
             <div id='signInDiv'>
-              {/* <div onClick={() => login()}>Login</div> */}
+              
             <GoogleLogin
-              onSuccess={credentialResponse => {
+              onSuccess={(credentialResponse, tokenResponse) => {
                 console.log(credentialResponse);
+                console.log(tokenResponse)
                 setToken(credentialResponse.clientId)
+                console.log('token id', token);
                 console.log(jwt_decode(credentialResponse.credential))
                 setUser(jwt_decode(credentialResponse.credential))
               }}
@@ -115,11 +127,9 @@ function App() {
               theme='outline'
               size='small'
               text='signin'
-              login_uri='https://dev.airlingo.io/api/topic/'
-              native_login_uri='https://dev.airlingo.io/api/topic/'
               native_callback={(res) => console.log('native_callback', res)}
               nonce=''
-            />
+             />
             </div>
             <p className='or '>or</p>
             <a className='create_account' href=' # ' >Create an account</a>
@@ -130,7 +140,7 @@ function App() {
         <>
           <Routes>
             <Route path='/' element={<Layout/>}>
-              <Route path='/home' element={<HomePage user={user} info={pageInfo} setInfo={setPageInfo}/>} />
+              <Route path='/home' element={<HomePage user={user} info={pageInfo} setInfo={setPageInfo} login={login} />} />
               <Route path='/library' element={<LibraryPage user={user}/>} />
               <Route path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart}/>} />
               <Route path='/continue' element={<Continue info={pageInfo}/>}/>

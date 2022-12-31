@@ -5,8 +5,8 @@ import {TfiLock} from 'react-icons/tfi'
 import { Link } from 'react-router-dom';
 
 
-export default function HomePage({user, info}) {
-
+export default function HomePage({user, info, login}) {
+  // login()
 
   return (
     <div className='home_page'>
