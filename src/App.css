@@ -51,3 +51,15 @@ font-family: 'Gilroy-Regular', sans-serif;
   color: #FFFFFF;
   text-decoration: none;
 }
+
+.login_btn {
+  text-decoration: none;
+  background: #E37F65;
+  box-shadow: 2px 4px 4px rgba(92, 92, 92, 0.25);
+  border-radius: 7px;
+  padding: 0.5rem 2rem;
+  font-family: 'Gilroy-Bold';
+  font-size: 20px;
+  text-align: center;
+  color: #FFFFFF;
+}

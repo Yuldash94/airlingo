@@ -3,9 +3,10 @@ import {AiOutlineLock} from 'react-icons/ai'
 import {IoMdCheckmarkCircleOutline} from 'react-icons/io'
 import {BsCircle} from 'react-icons/bs'
 import './Continue.css'
+import { Link } from 'react-router-dom'
 
 
-export default function Continue({info, item}) {
+export default function Continue({info, item, topics}) {
 
     const lessons = [
         {
@@ -54,18 +55,21 @@ export default function Continue({info, item}) {
 
   return (
     <div className='continue'>
-        <div className='continue_head' style={{backgroundImage: 'url(./img/home/'+info[0].img+')'}}>
-            <h3>{info[0].title}</h3>   
+        {topics.map(item => (
+        <div key={item.id} className='continue_head' style={{backgroundImage: 'url(./img/home/'+info[0].img+')'}}>
+            <Link className='topic_name' to='/messages'>{item.name}</Link>   
         </div>
+        ))}
+        
         <div className='continue_content'>
-            {lessons.map((item) => 
-            <div key={item.lesson_id} className='content'>
+            {topics.map((item) => 
+            <div key={item.id} className='content'>
                 <div>
                     <div className='content_name'>
-                        <h3>{item.lesson_name}</h3>
-                        <p>{item.lesson_time} min</p>
+                        <h3>{item.name}</h3>
+                        {/* <p>{item.lesson_time} min</p> */}
                     </div>
-                    {!item.active && !item.passed ? <AiOutlineLock values={{size: '36px'}}/> : item.passed ? <IoMdCheckmarkCircleOutline/> : <BsCircle/>}
+                    {item.isDeleted ? <AiOutlineLock values={{size: '36px'}}/> :  <IoMdCheckmarkCircleOutline/>}
                 </div>
             </div>
             )}

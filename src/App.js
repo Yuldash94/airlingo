@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode'
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
 import Layout from './components/Layout';
 import HomePage from './components/HomePage';
@@ -97,6 +97,7 @@ function App() {
       setUser(credentialResponse)
       setToken(credentialResponse.access_token)
       console.log('token id', credentialResponse.access_token);
+      loadTopics(credentialResponse.access_token)
   }
 
   const login = useGoogleLogin({
@@ -115,7 +116,24 @@ function App() {
       console.log('user', userInfo);
     },
   })
+  const [topics, setTopics] = useState({})
+  const url = 'https://dev.airlingo.io/api/topics/'
+
+  async function loadTopics(token) {
+    let response = await fetch(url, {
+      method: 'GET',
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  }); 
   
+    let json = await response.json();
+    console.log('topics json',json)
+    console.log('topic id', json.topics[0].id);
+    setTopics(json.topics)
+    return json;
+  }
+
   
   return (
     <div className="App">
@@ -125,7 +143,11 @@ function App() {
             <p className='companion'>Your AI training companion</p>
             
             <div id='signInDiv'>
-              <button onClick={() => login()}>Login</button>
+              <Link to='/home' className='login_btn' onClick={() => {
+                login()
+                }}>
+                  Login
+              </Link>
             {/* <GoogleLogin
               onSuccess={(credentialResponse) => {
                 console.log(credentialResponse);
@@ -153,12 +175,12 @@ function App() {
       { Object.keys(user).length !==0 &&
         <>
           <Routes>
-            <Route path='/' element={<Layout/>}>
+            <Route path='/' element={<Layout />}>
               <Route path='/home' element={<HomePage user={user} info={pageInfo} setInfo={setPageInfo} login={login} />} />
               <Route path='/library' element={<LibraryPage user={user}/>} />
-              <Route path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart}/>} />
-              <Route path='/continue' element={<Continue info={pageInfo}/>}/>
-              <Route path='/messages' element={<Messages token={token} user={user} info={pageInfo} setGreeting={setGreeting} greeting={greeting}/>}/>
+              <Route index={true} path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart} topics={topics} setTopics={setTopics} loadTopics={loadTopics} token={token}/>} />
+              <Route path='/continue' element={<Continue info={pageInfo} topics={topics}/>}/>
+              <Route path='/messages' element={<Messages token={token} user={user} info={pageInfo} setGreeting={setGreeting} greeting={greeting} topics={topics} setTopics={setTopics} loadTopics={loadTopics}/>}/>
             </Route>
           </Routes>
         </>

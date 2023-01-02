@@ -16,7 +16,7 @@ function LayOut() {
       </div>
       <nav id='navbar'>
           <Link to='/home'> <TiHome/></Link>
-          <Link to='/library'><MdMenuBook/></Link>
+          <Link to='/continue'><MdMenuBook/></Link>
           <Link to='/profile'><FaUser/></Link>
       </nav>
     </div>

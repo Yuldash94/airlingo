@@ -16,10 +16,13 @@
     background-position: center;
 }
 
-.continue_head > h3 {
+.topic_name {
     font-family: 'Gilroy-Bold';
     font-size: 35px;
     margin-left: 1rem;
+    margin-bottom: 2rem;
+    color: #070707;
+    text-decoration: none;
 }
 
 .continue_content {

@@ -9,6 +9,14 @@
     margin-top: 30px;
 }
 
+.delete {
+    position: absolute;
+    font-size: 12px;
+    left: 5px;
+    top: 5px;
+    color: #a5a5a5;
+}
+
 .close {
     display: flex;
     align-items: flex-start;

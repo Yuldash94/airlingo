@@ -1,10 +1,22 @@
 import React from 'react'
+import { useEffect } from 'react'
 import { RxDotFilled } from 'react-icons/rx'
 import { SlArrowRight } from 'react-icons/sl'
 import { Link } from 'react-router-dom'
 import './ProfilePage.css'
 
-export default function ProfilePage({user, info, chart, setChart}) {
+export default function ProfilePage({user, info, chart, setChart, topics, setTopics, loadTopics, token}) {
+  const url = 'https://dev.airlingo.io/api/topics/'
+  const urlOptions = {
+    method: 'GET',
+    headers: {
+        Authorization: `Bearer ${token}`
+    }
+}
+  useEffect(() => {
+    loadTopics(url, urlOptions)
+  }, [])
+
   return (
     <div className='profile'>
         <div className='profile_header'>

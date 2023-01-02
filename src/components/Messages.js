@@ -3,6 +3,7 @@ import { useState } from 'react'
 import  { RxCross2 } from 'react-icons/rx'
 import { AiFillSound, AiFillAudio } from 'react-icons/ai'
 import { FaRegKeyboard } from 'react-icons/fa'
+import { TiDocumentDelete } from 'react-icons/ti'
 import { TbBulb } from 'react-icons/tb'
 import { Link } from 'react-router-dom'
 import './Messages.css'
@@ -99,7 +100,7 @@ import { Metrics } from './Metrics'
 
 
 
-export default function Messages( {user, token, greeting, setGreeting}) {
+export default function Messages( {user, token, greeting, setGreeting, topics, setTopics, loadTopics}) {
     // const teacher = {
     //     id: 1 ,
     //     first_name: 'Alec',
@@ -110,7 +111,7 @@ export default function Messages( {user, token, greeting, setGreeting}) {
     // console.log('token', token);
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
-    const [topics, setTopics] = useState({})
+
     const [metrics, setMetrics] = useState(false)
     const [metric, setMetric] = useState({})
     const url = 'https://dev.airlingo.io/api/topics/'
@@ -132,15 +133,8 @@ export default function Messages( {user, token, greeting, setGreeting}) {
         }),
     }
     
-    async function loadTopics(url, urlOptions) {
-        let response = await fetch(url, urlOptions); 
-      
-        let json = await response.json();
-        console.log('topics json',json)
-        console.log('topic id', json.topics[0].id);
-        setTopics(json.topics)
-        return json;
-    }
+    console.log(topics);
+
     // const urlMessages = `${url}${topics.topics[0].id}`
     async function loadMessages(url, topics, urlOptions) {
         let response = await fetch(`${url}${topics[0].id}/messages`, urlOptions)
@@ -151,19 +145,19 @@ export default function Messages( {user, token, greeting, setGreeting}) {
         return json
     }
     async function deleteMessages(url, topics) {
-        let response = await fetch(`${url}${topics[0].id}/messages`, {
+        await fetch(`${url}${topics[0].id}/messages`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-
+        loadMessages()
     }
 
-
+     const topic_id = 'f9a918c6-7fc5-42c6-b826-f47c6e244572'
     async function uploadMessages(url, topics, message) {
         
-        await fetch(`${url}${topics[0].id}/messages`, {
+        await fetch(`${url}${topic_id}/messages`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -175,32 +169,32 @@ export default function Messages( {user, token, greeting, setGreeting}) {
             }),
         })
         .then(response => response.json())
+
+        loadMessages()
     }
 
-      useEffect(() => {
-        loadTopics(url, urlOptions)
-        // loadMessages(url, topics, urlOptions)
-        // uploadMessages(url, topics, urlUploadOptions)
-      }, [])
 
-      useEffect(() => {
-        loadMessages(url, topics, urlOptions)
-      })
 
-      const upload = (url, topics, message) => {
-        uploadMessages(url, topics, message)
-      }
-      useEffect(() => {
-        // upload()
-        uploadMessages(url, topics, message)
-      },[message])
-    
+    useEffect(() => {
+    loadMessages(url, topics, urlOptions)
+    },[])
+
+    const upload = (url, topics, message) => {
+    uploadMessages(url, topics, message)
+    }
+
+    // useEffect(() => {
+    // // upload()
+    // uploadMessages(url, topics, message)
+    // },[])
+
   return (
     <>
         {greeting ? 
             <Greetings greeting={greeting} setGreeting={setGreeting}/>
             :
             <div className='messages'>
+                <TiDocumentDelete className='delete' onClick={() => deleteMessages()}/>
             <div className='close'>
                 <Link to='/home'>
                     <div className='messages_close' onClick={() => setGreeting(true)}>
@@ -242,6 +236,7 @@ export default function Messages( {user, token, greeting, setGreeting}) {
                         uploadMessages(url, topics, message )
                         console.log(message.value)
                         document.getElementById("input").value = ''
+                        loadMessages()
                         }
                         }>
                         <FaRegKeyboard/>
