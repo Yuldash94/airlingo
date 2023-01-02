@@ -143,7 +143,7 @@ function App() {
             <p className='companion'>Your AI training companion</p>
             
             <div id='signInDiv'>
-              <Link to='/home' className='login_btn' onClick={() => {
+              <Link to='/continue' className='login_btn' onClick={() => {
                 login()
                 }}>
                   Login
@@ -172,13 +172,13 @@ function App() {
           </div>
       }
 
-      { Object.keys(user).length !==0 &&
+      { Object.keys(user).length !==0 && Object.keys(topics).length !==0 &&
         <>
           <Routes>
             <Route path='/' element={<Layout />}>
               <Route path='/home' element={<HomePage user={user} info={pageInfo} setInfo={setPageInfo} login={login} />} />
               <Route path='/library' element={<LibraryPage user={user}/>} />
-              <Route index={true} path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart} topics={topics} setTopics={setTopics} loadTopics={loadTopics} token={token}/>} />
+              <Route  path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart} topics={topics} setTopics={setTopics} loadTopics={loadTopics} token={token}/>} />
               <Route path='/continue' element={<Continue info={pageInfo} topics={topics}/>}/>
               <Route path='/messages' element={<Messages token={token} user={user} info={pageInfo} setGreeting={setGreeting} greeting={greeting} topics={topics} setTopics={setTopics} loadTopics={loadTopics}/>}/>
             </Route>

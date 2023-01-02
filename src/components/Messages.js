@@ -133,19 +133,19 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         }),
     }
     
-    console.log(topics);
+    // console.log(topics);
 
     // const urlMessages = `${url}${topics.topics[0].id}`
-    async function loadMessages(url, topics, urlOptions) {
-        let response = await fetch(`${url}${topics[0].id}/messages`, urlOptions)
+    async function loadMessages() {
+        let response = await fetch(`${url}${topic_id}/messages`, urlOptions)
 
         let json = await response.json()
         console.log('messages', json);
         setMessages(json.messages)
         return json
     }
-    async function deleteMessages(url, topics) {
-        await fetch(`${url}${topics[0].id}/messages`, {
+    async function deleteMessages() {
+        await fetch(`${url}${topic_id}/messages`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`
@@ -155,9 +155,8 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     }
 
      const topic_id = 'f9a918c6-7fc5-42c6-b826-f47c6e244572'
-    async function uploadMessages(url, topics, message) {
-        
-        await fetch(`${url}${topic_id}/messages`, {
+    function uploadMessages() {
+        fetch(`${url}${topic_id}/messages`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -167,8 +166,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             body:  JSON.stringify({
                 "text": `${message.value}`,
             }),
-        })
-        .then(response => response.json())
+        }).then(response => response.json())
 
         loadMessages()
     }
@@ -176,12 +174,12 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
 
 
     useEffect(() => {
-    loadMessages(url, topics, urlOptions)
+    loadMessages()
     },[])
 
-    const upload = (url, topics, message) => {
-    uploadMessages(url, topics, message)
-    }
+    // const upload = (url, topics, message) => {
+    // uploadMessages(url, topics, message)
+    // }
 
     // useEffect(() => {
     // // upload()
@@ -233,9 +231,10 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                     }}/>
                 <div className='messages_btns'>
                     <div className='keyboard' onClick={(e) => {
-                        uploadMessages(url, topics, message )
+                        uploadMessages()
                         console.log(message.value)
                         document.getElementById("input").value = ''
+                        loadMessages()
                         loadMessages()
                         }
                         }>
