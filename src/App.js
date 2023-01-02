@@ -92,14 +92,29 @@ function App() {
   const [token,setToken] = useState ('')
   const [greeting, setGreeting] = useState(true) 
   
-  const login = useGoogleLogin({
-    onSuccess: tokenResponse => {
-      console.log(tokenResponse)
-      setData(tokenResponse)
-      // setToken(tokenResponse.access_token)
-    },
-  });
+  const onSuccess = (credentialResponse) => {
+      console.log('cre response', credentialResponse)
+      setUser(credentialResponse)
+      setToken(credentialResponse.access_token)
+      console.log('token id', credentialResponse.access_token);
+  }
 
+  const login = useGoogleLogin({
+    onSuccess:  onSuccess,
+    flow: 'implicit',
+  });
+  
+  const googleLogin = useGoogleLogin({
+    onSuccess: async tokenResponse => {
+      console.log(tokenResponse);
+     const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+        })
+        .then(res => res.data);
+
+      console.log('user', userInfo);
+    },
+  })
   
   
   return (
@@ -110,26 +125,25 @@ function App() {
             <p className='companion'>Your AI training companion</p>
             
             <div id='signInDiv'>
-              
-            <GoogleLogin
-              onSuccess={(credentialResponse, tokenResponse) => {
+              <button onClick={() => login()}>Login</button>
+            {/* <GoogleLogin
+              onSuccess={(credentialResponse) => {
                 console.log(credentialResponse);
-                console.log(tokenResponse)
-                setToken(credentialResponse.clientId)
-                console.log('token id', token);
-                console.log(jwt_decode(credentialResponse.credential))
+                // console.log(tokenResponse)
+                // setToken(credentialResponse.access_token)
+                // console.log(jwt_decode(credentialResponse.credential))
                 setUser(jwt_decode(credentialResponse.credential))
               }}
               onError={() => {
                 console.log('Login Failed');
               }}
-              useOneTap
+              // useOneTap
               theme='outline'
               size='small'
               text='signin'
               native_callback={(res) => console.log('native_callback', res)}
               nonce=''
-             />
+             /> */}
             </div>
             <p className='or '>or</p>
             <a className='create_account' href=' # ' >Create an account</a>

@@ -7,6 +7,7 @@ import { TbBulb } from 'react-icons/tb'
 import { Link } from 'react-router-dom'
 import './Messages.css'
 import Greetings from './Greetings'
+import { Metrics } from './Metrics'
 
 
 //     const messagesExample = [
@@ -106,9 +107,12 @@ export default function Messages( {user, token, greeting, setGreeting}) {
     //     full_name: 'Alec Underwood',
     //     picture: 'alec.png'
     // }
-    console.log('token', token);
+    // console.log('token', token);
     const [messages, setMessages] = useState([])
+    const [message, setMessage] = useState('')
     const [topics, setTopics] = useState({})
+    const [metrics, setMetrics] = useState(false)
+    const [metric, setMetric] = useState({})
     const url = 'https://dev.airlingo.io/api/topics/'
     const urlOptions = {
         method: 'GET',
@@ -119,10 +123,12 @@ export default function Messages( {user, token, greeting, setGreeting}) {
     const urlUploadOptions = {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
         },
         body:  JSON.stringify({
-            "text": "HERE IS THE USER TEXT"
+            "text": `${message}`,
         }),
     }
     
@@ -144,22 +150,51 @@ export default function Messages( {user, token, greeting, setGreeting}) {
         setMessages(json.messages)
         return json
     }
+    async function deleteMessages(url, topics) {
+        let response = await fetch(`${url}${topics[0].id}/messages`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
 
-    // async function uploadMessages(url, topics, urlUploadOptions) {
-    //     await fetch(`${url}${topics[0].id}/messages`, urlOptions)
-    //     .then(response => response)
-    // }
+    }
+
+
+    async function uploadMessages(url, topics, message) {
+        
+        await fetch(`${url}${topics[0].id}/messages`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body:  JSON.stringify({
+                "text": `${message.value}`,
+            }),
+        })
+        .then(response => response.json())
+    }
 
       useEffect(() => {
         loadTopics(url, urlOptions)
-        loadMessages(url, topics, urlOptions)
+        // loadMessages(url, topics, urlOptions)
         // uploadMessages(url, topics, urlUploadOptions)
-      },[])
+      }, [])
 
+      useEffect(() => {
+        loadMessages(url, topics, urlOptions)
+      })
 
+      const upload = (url, topics, message) => {
+        uploadMessages(url, topics, message)
+      }
+      useEffect(() => {
+        // upload()
+        uploadMessages(url, topics, message)
+      },[message])
     
-
-
   return (
     <>
         {greeting ? 
@@ -179,7 +214,14 @@ export default function Messages( {user, token, greeting, setGreeting}) {
             </div>
             <div className='messages_list'>
                 {messages.map(message => 
-                    <div key={message.creationTime} className={message.type === 'FromCustomer' ? 'message message_right' : message.type==='FromUser' ? 'message message_left' : 'message message_center'}>
+                    <div key={message.creationTime} 
+                    className={message.type === 'FromCustomer' ? 'message message_right' : message.type==='FromUser' ? 'message message_left' : 'message message_center'}
+                    onClick={() => {if (message.type === 'FromUser') {
+                        setMetrics(true)
+                        setMetric(message.metrics)
+                    } 
+                    }}
+                    >
                         <p>{message.text}</p>
                         {message.type === 'FromUser' || message.type === 'FromCustomer' ? 
                                         (<div className='audio'>
@@ -190,17 +232,29 @@ export default function Messages( {user, token, greeting, setGreeting}) {
                     </div>    
                 )}
             </div>
-            <div className='messages_btns'>
-                <div className='keyboard'>
-                    <FaRegKeyboard/>
-                </div>
-                <div className='recording'>
-                    <AiFillAudio/>
-                </div>
-                <div className='hint'>
-                    <TbBulb/>
+            <Metrics active={metrics} setActive={setMetrics} metric={metric} setMetric={setMetric}/>
+            <div className='messages_bottom'>
+                <input id='input' placeholder='Write you message' ref={ref => {
+                    setMessage(ref)
+                    }}/>
+                <div className='messages_btns'>
+                    <div className='keyboard' onClick={(e) => {
+                        uploadMessages(url, topics, message )
+                        console.log(message.value)
+                        document.getElementById("input").value = ''
+                        }
+                        }>
+                        <FaRegKeyboard/>
+                    </div>
+                    <div className='recording'>
+                        <AiFillAudio/>
+                    </div>
+                    <div className='hint'>
+                        <TbBulb/>
+                    </div>
                 </div>
             </div>
+
             </div>
         }
     </>
