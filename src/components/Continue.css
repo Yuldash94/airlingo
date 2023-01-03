@@ -52,9 +52,11 @@
     align-items: flex-start;
 }
 
-.content_name > h3 {
+.to_messages {
     font-family: 'Gilroy-Bold';
     font-size: 18px;
+    color: #FFFFFF;
+    text-decoration: none;
 }
 
 .content_name > p {

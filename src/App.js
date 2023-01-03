@@ -9,6 +9,7 @@ import ProfilePage from './components/ProfilePage';
 import Continue from './components/Continue';
 
 
+
 import './App.css';
 import Messages from './components/Messages';
 
@@ -98,6 +99,7 @@ function App() {
       setToken(credentialResponse.access_token)
       console.log('token id', credentialResponse.access_token);
       loadTopics(credentialResponse.access_token)
+      getuserInfo(credentialResponse.access_token)
   }
 
   const login = useGoogleLogin({
@@ -134,7 +136,19 @@ function App() {
     return json;
   }
 
-  
+    async function getuserInfo(token) {
+      let response = await fetch('https://www.googleapis.com/auth/' , {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+      })
+
+      let json = await response.json()
+      console.log('user', json);
+      return json
+    }
+
   return (
     <div className="App">
       { !Object.keys(user).length && 
@@ -166,6 +180,7 @@ function App() {
               native_callback={(res) => console.log('native_callback', res)}
               nonce=''
              /> */}
+
             </div>
             <p className='or '>or</p>
             <a className='create_account' href=' # ' >Create an account</a>

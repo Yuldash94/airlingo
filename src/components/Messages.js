@@ -188,9 +188,9 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
 
   return (
     <>
-        {greeting ? 
+        {/* {greeting ? 
             <Greetings greeting={greeting} setGreeting={setGreeting}/>
-            :
+            : ""} */}
             <div className='messages'>
                 <TiDocumentDelete className='delete' onClick={() => deleteMessages()}/>
             <div className='close'>
@@ -250,7 +250,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             </div>
 
             </div>
-        }
+        
     </>
   )
 }

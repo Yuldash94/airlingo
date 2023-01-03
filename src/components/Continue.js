@@ -57,7 +57,7 @@ export default function Continue({info, item, topics}) {
     <div className='continue'>
         {topics.map(item => (
         <div key={item.id} className='continue_head' style={{backgroundImage: 'url(./img/home/'+info[0].img+')'}}>
-            <Link className='topic_name' to='/messages'>{item.name}</Link>   
+            <h3 className='topic_name'>{item.name}</h3>   
         </div>
         ))}
         
@@ -66,7 +66,7 @@ export default function Continue({info, item, topics}) {
             <div key={item.id} className='content'>
                 <div>
                     <div className='content_name'>
-                        <h3>{item.name}</h3>
+                        <Link className='to_messages' to='/messages'>{item.name}</Link>
                         {/* <p>{item.lesson_time} min</p> */}
                     </div>
                     {item.isDeleted ? <AiOutlineLock values={{size: '36px'}}/> :  <IoMdCheckmarkCircleOutline/>}
