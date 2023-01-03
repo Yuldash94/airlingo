@@ -111,6 +111,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     // console.log('token', token);
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
+    const [userMessage, setUserMessage] = useState([])
 
     const [metrics, setMetrics] = useState(false)
     const [metric, setMetric] = useState({})
@@ -144,6 +145,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         setMessages(json.messages)
         return json
     }
+
     async function deleteMessages() {
         await fetch(`${url}${topic_id}/messages`, {
             method: 'DELETE',
@@ -155,8 +157,8 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     }
 
      const topic_id = 'f9a918c6-7fc5-42c6-b826-f47c6e244572'
-    function uploadMessages() {
-        fetch(`${url}${topic_id}/messages`, {
+    async function uploadMessages() {
+        await fetch(`${url}${topic_id}/messages`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -166,8 +168,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             body:  JSON.stringify({
                 "text": `${message.value}`,
             }),
-        }).then(response => response.json())
-
+        })
         loadMessages()
     }
 
@@ -234,8 +235,6 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                         uploadMessages()
                         console.log(message.value)
                         document.getElementById("input").value = ''
-                        loadMessages()
-                        loadMessages()
                         }
                         }>
                         <FaRegKeyboard/>
