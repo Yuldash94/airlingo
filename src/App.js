@@ -92,11 +92,10 @@ function App() {
   const [greeting, setGreeting] = useState(true) 
   
   const onSuccess = (credentialResponse) => {
-      console.log('cre response', credentialResponse)
-      // setUser(credentialResponse)
+      // console.log('cre response', credentialResponse)
       localStorage.setItem('access_token', credentialResponse.access_token)
       setToken(localStorage.getItem('access_token'))
-      console.log('token id', credentialResponse.access_token);
+      // console.log('token id', credentialResponse.access_token);
       loadTopics(credentialResponse.access_token)
   }
 
@@ -119,8 +118,8 @@ function App() {
   }); 
   
     let json = await response.json();
-    console.log('topics json',json)
-    console.log('topic id', json.topics[0].id);
+    // console.log('topics json',json)
+    // console.log('topic id', json.topics[0].id);
     setTopics(json.topics)
     return json;
   }

@@ -134,6 +134,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     // }
     
 
+
     // const urlMessages = `${url}${topics.topics[0].id}`
     async function loadMessages() {
         let response = await fetch(`${url}${topicId}/messages`, urlOptions)
