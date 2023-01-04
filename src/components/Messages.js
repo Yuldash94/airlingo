@@ -100,7 +100,7 @@ import { Metrics } from './Metrics'
 
 
 
-export default function Messages( {user, token, greeting, setGreeting, topics, setTopics, loadTopics}) {
+export default function Messages( {user, token, greeting, setGreeting, topics, setTopics, loadTopics, topicId}) {
     // const teacher = {
     //     id: 1 ,
     //     first_name: 'Alec',
@@ -111,7 +111,6 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     // console.log('token', token);
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
-    const [userMessage, setUserMessage] = useState([])
 
     const [metrics, setMetrics] = useState(false)
     const [metric, setMetric] = useState({})
@@ -122,32 +121,31 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             Authorization: `Bearer ${token}`
         }
     }
-    const urlUploadOptions = {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body:  JSON.stringify({
-            "text": `${message}`,
-        }),
-    }
+    // const urlUploadOptions = {
+    //     method: 'POST',
+    //     headers: {
+    //         Authorization: `Bearer ${token}`,
+    //         Accept: 'application/json',
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body:  JSON.stringify({
+    //         "text": `${message}`,
+    //     }),
+    // }
     
-    // console.log(topics);
 
     // const urlMessages = `${url}${topics.topics[0].id}`
     async function loadMessages() {
-        let response = await fetch(`${url}${topic_id}/messages`, urlOptions)
+        let response = await fetch(`${url}${topicId}/messages`, urlOptions)
 
         let json = await response.json()
-        console.log('messages', json);
         setMessages(json.messages)
+
         return json
     }
 
     async function deleteMessages() {
-        await fetch(`${url}${topic_id}/messages`, {
+        await fetch(`${url}${topicId}/messages`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`
@@ -156,9 +154,9 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         loadMessages()
     }
 
-     const topic_id = 'f9a918c6-7fc5-42c6-b826-f47c6e244572'
+     
     async function uploadMessages() {
-        await fetch(`${url}${topic_id}/messages`, {
+        await fetch(`${url}${topicId}/messages`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -178,14 +176,6 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     loadMessages()
     },[])
 
-    // const upload = (url, topics, message) => {
-    // uploadMessages(url, topics, message)
-    // }
-
-    // useEffect(() => {
-    // // upload()
-    // uploadMessages(url, topics, message)
-    // },[])
 
   return (
     <>
@@ -195,7 +185,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             <div className='messages'>
                 <TiDocumentDelete className='delete' onClick={() => deleteMessages()}/>
             <div className='close'>
-                <Link to='/home'>
+                <Link to='/topics'>
                     <div className='messages_close' onClick={() => setGreeting(true)}>
                         <RxCross2 />
                     </div>
@@ -226,6 +216,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 )}
             </div>
             <Metrics active={metrics} setActive={setMetrics} metric={metric} setMetric={setMetric}/>
+
             <div className='messages_bottom'>
                 <input id='input' placeholder='Write you message' ref={ref => {
                     setMessage(ref)

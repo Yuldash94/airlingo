@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode'
 import { Routes, Route, Link } from 'react-router-dom';
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
+import { gapi } from 'gapi-script'
+import { GoogleLogin, useGoogleLogin, useGoogleOneTapLogin, hasGrantedAllScopesGoogle} from '@react-oauth/google'
 import Layout from './components/Layout';
 import HomePage from './components/HomePage';
 import LibraryPage from './components/LibraryPage';
 import ProfilePage from './components/ProfilePage';
 import Continue from './components/Continue';
-
-
-
 import './App.css';
 import Messages from './components/Messages';
 
@@ -89,17 +87,17 @@ function App() {
       level: '10%',
     },
   ])
-  const [data, setData] = useState({})
-  const [token,setToken] = useState ('')
+  const [topicId, setTopicId] = useState({})
+  const [token, setToken] = useState ('')
   const [greeting, setGreeting] = useState(true) 
   
   const onSuccess = (credentialResponse) => {
       console.log('cre response', credentialResponse)
-      setUser(credentialResponse)
-      setToken(credentialResponse.access_token)
+      // setUser(credentialResponse)
+      localStorage.setItem('access_token', credentialResponse.access_token)
+      setToken(localStorage.getItem('access_token'))
       console.log('token id', credentialResponse.access_token);
       loadTopics(credentialResponse.access_token)
-      getuserInfo(credentialResponse.access_token)
   }
 
   const login = useGoogleLogin({
@@ -107,17 +105,8 @@ function App() {
     flow: 'implicit',
   });
   
-  const googleLogin = useGoogleLogin({
-    onSuccess: async tokenResponse => {
-      console.log(tokenResponse);
-     const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-        })
-        .then(res => res.data);
 
-      console.log('user', userInfo);
-    },
-  })
+ 
   const [topics, setTopics] = useState({})
   const url = 'https://dev.airlingo.io/api/topics/'
 
@@ -136,28 +125,26 @@ function App() {
     return json;
   }
 
-    async function getuserInfo(token) {
-      let response = await fetch('https://www.googleapis.com/auth/' , {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-      })
+    const CLIENT_ID = '268425863623-r7oavatem0cs8df8n7j9mq4lc9iq2l21.apps.googleusercontent.com'
 
-      let json = await response.json()
-      console.log('user', json);
-      return json
-    }
+    useGoogleOneTapLogin({
+      onSuccess: (credentialResponse) => {
+        setUser(jwt_decode(credentialResponse.credential))
+      },
+      onError: () => {
+        console.log('Login Failed');
+      },
+    });
+
 
   return (
     <div className="App">
-      { !Object.keys(user).length && 
+      { !Object.keys(token).length && 
             <div id='App_greetings'>
             <img className='logo' src='./img/airlingo_logo.png' alt='logo'></img>
             <p className='companion'>Your AI training companion</p>
-            
             <div id='signInDiv'>
-              <Link to='/continue' className='login_btn' onClick={() => {
+              <Link to='/topics' className='login_btn' onClick={() => {
                 login()
                 }}>
                   Login
@@ -167,7 +154,7 @@ function App() {
                 console.log(credentialResponse);
                 // console.log(tokenResponse)
                 // setToken(credentialResponse.access_token)
-                // console.log(jwt_decode(credentialResponse.credential))
+                console.log(jwt_decode(credentialResponse.credential))
                 setUser(jwt_decode(credentialResponse.credential))
               }}
               onError={() => {
@@ -177,7 +164,7 @@ function App() {
               theme='outline'
               size='small'
               text='signin'
-              native_callback={(res) => console.log('native_callback', res)}
+              native_callback={(credentialResponse) => credentialResponse.requestAccessToken()}
               nonce=''
              /> */}
 
@@ -191,11 +178,11 @@ function App() {
         <>
           <Routes>
             <Route path='/' element={<Layout />}>
-              <Route path='/home' element={<HomePage user={user} info={pageInfo} setInfo={setPageInfo} login={login} />} />
+              {/* <Route path='/home' element={<HomePage user={user} info={pageInfo} setInfo={setPageInfo} login={login} />} />
               <Route path='/library' element={<LibraryPage user={user}/>} />
-              <Route  path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart} topics={topics} setTopics={setTopics} loadTopics={loadTopics} token={token}/>} />
-              <Route path='/continue' element={<Continue info={pageInfo} topics={topics}/>}/>
-              <Route path='/messages' element={<Messages token={token} user={user} info={pageInfo} setGreeting={setGreeting} greeting={greeting} topics={topics} setTopics={setTopics} loadTopics={loadTopics}/>}/>
+              <Route  path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart} topics={topics} setTopics={setTopics} loadTopics={loadTopics} token={token}/>} /> */}
+              <Route path='/topics' element={<Continue info={pageInfo} topics={topics} setTopicId={setTopicId}/>}/>
+              <Route path='/messages' element={<Messages token={token} user={user} info={pageInfo} setGreeting={setGreeting} greeting={greeting} topics={topics} setTopics={setTopics} loadTopics={loadTopics} topicId={topicId}/>}/>
             </Route>
           </Routes>
         </>

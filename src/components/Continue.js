@@ -6,7 +6,7 @@ import './Continue.css'
 import { Link } from 'react-router-dom'
 
 
-export default function Continue({info, item, topics}) {
+export default function Continue({info, item, topics, setTopicId}) {
 
     const lessons = [
         {
@@ -55,18 +55,15 @@ export default function Continue({info, item, topics}) {
 
   return (
     <div className='continue'>
-        {topics.map(item => (
-        <div key={item.id} className='continue_head' style={{backgroundImage: 'url(./img/home/'+info[0].img+')'}}>
-            <h3 className='topic_name'>{item.name}</h3>   
-        </div>
-        ))}
-        
+        <div className='continue_head' style={{backgroundImage: 'url(./img/home/'+info[0].img+')'}}>
+            <h3 className='topic_name'>Topics</h3>   
+        </div>        
         <div className='continue_content'>
             {topics.map((item) => 
             <div key={item.id} className='content'>
                 <div>
                     <div className='content_name'>
-                        <Link className='to_messages' to='/messages'>{item.name}</Link>
+                        <Link onClick={() => setTopicId(item.id)} className='to_messages' to='/messages'>{item.name}</Link>
                         {/* <p>{item.lesson_time} min</p> */}
                     </div>
                     {item.isDeleted ? <AiOutlineLock values={{size: '36px'}}/> :  <IoMdCheckmarkCircleOutline/>}

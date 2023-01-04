@@ -3,7 +3,6 @@ import './Metrics.css'
 
 
 export const Metrics = ({active, setActive, metric, setMetric}) => {
-    console.log(Object.entries(metric));
   return (
     <div className={active ? 'metrics active' : 'metrics'} 
     onClick={() => {
@@ -11,7 +10,7 @@ export const Metrics = ({active, setActive, metric, setMetric}) => {
         setMetric({})}}>
         <div className='metrics_content' onClick={e => e.stopPropagation()}>
             {Object.entries(metric).map( ([key, value]) => 
-                <div>
+                <div key={key}>
                     <p>{key}: {value}</p>
                 </div>
             )}
