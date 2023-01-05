@@ -91,12 +91,19 @@ function App() {
   const [token, setToken] = useState ('')
   const [greeting, setGreeting] = useState(true) 
   
+  useEffect(()=> {
+    setToken(localStorage.getItem('access_token'))
+      loadTopics(token)
+  }, [token])
+
   const onSuccess = (credentialResponse) => {
       // console.log('cre response', credentialResponse)
       localStorage.setItem('access_token', credentialResponse.access_token)
       setToken(localStorage.getItem('access_token'))
       console.log('token id onSucces', credentialResponse.access_token);
-      loadTopics(credentialResponse.access_token)
+      if (topics) {
+        loadTopics(credentialResponse.access_token)
+      }
   }
 
   const login = useGoogleLogin({
@@ -138,9 +145,10 @@ function App() {
       },
     })
 
+
   return (
     <div className="App">
-      { !Object.keys(token).length && 
+      {  !Object.keys(token).length && 
             <div id='App_greetings'>
             <img className='logo' src='./img/airlingo_logo.png' alt='logo'></img>
             <p className='companion'>Your AI training companion</p>

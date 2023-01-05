@@ -111,9 +111,9 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     // console.log('token', token);
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
-
     const [metrics, setMetrics] = useState(false)
     const [metric, setMetric] = useState({})
+    const [loading, setLoading] = useState(false)
     const url = 'https://dev.airlingo.io/api/topics/'
     const urlOptions = {
         method: 'GET',
@@ -157,6 +157,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
 
      
     async function uploadMessages() {
+        setLoading(true)
         await fetch(`${url}${topicId}/messages`, {
             method: 'POST',
             headers: {
@@ -167,7 +168,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             body:  JSON.stringify({
                 "text": `${message.value}`,
             }),
-        })
+        }).then(()=> setLoading(false))
         loadMessages()
     }
 
@@ -194,7 +195,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             </div>
             <div className='messages_head'>
                 <img src={user.picture} alt='user'></img>
-                <h3>{user.name}!</h3>
+                <h3>{user.name}</h3>
             </div>
             <div className='messages_list'>
                 {messages.map(message => 
@@ -215,6 +216,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                         }
                     </div>    
                 )}
+                {loading && <p>Message is loading...</p>}
             </div>
             <Metrics active={metrics} setActive={setMetrics} metric={metric} setMetric={setMetric}/>
 

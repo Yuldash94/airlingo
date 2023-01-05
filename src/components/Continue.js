@@ -60,7 +60,7 @@ export default function Continue({info, item, topics, setTopicId}) {
         </div>        
         <div className='continue_content'>
             {topics.map((item) => 
-            <div key={item.id} className='content'>
+            <Link to='/messages' key={item.id} className='content'>
                 <div>
                     <div className='content_name'>
                         <Link onClick={() => setTopicId(item.id)} className='to_messages' to='/messages'>{item.name}</Link>
@@ -68,7 +68,7 @@ export default function Continue({info, item, topics, setTopicId}) {
                     </div>
                     {item.isDeleted ? <AiOutlineLock values={{size: '36px'}}/> :  <IoMdCheckmarkCircleOutline/>}
                 </div>
-            </div>
+            </Link>
             )}
         </div>
     </div>
