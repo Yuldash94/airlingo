@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode'
 import { Routes, Route, Link } from 'react-router-dom';
 import { gapi } from 'gapi-script'
-import { GoogleLogin, useGoogleLogin, useGoogleOneTapLogin, hasGrantedAllScopesGoogle} from '@react-oauth/google'
+import { GoogleLogin, useGoogleLogin, useGoogleOneTapLogin} from '@react-oauth/google'
 import Layout from './components/Layout';
 import HomePage from './components/HomePage';
 import LibraryPage from './components/LibraryPage';
@@ -95,12 +95,13 @@ function App() {
       // console.log('cre response', credentialResponse)
       localStorage.setItem('access_token', credentialResponse.access_token)
       setToken(localStorage.getItem('access_token'))
-      // console.log('token id', credentialResponse.access_token);
+      console.log('token id onSucces', credentialResponse.access_token);
       loadTopics(credentialResponse.access_token)
   }
 
   const login = useGoogleLogin({
     onSuccess:  onSuccess,
+    onError: (err) => { console.log('login fail', err);},
     flow: 'implicit',
   });
   
@@ -118,23 +119,24 @@ function App() {
   }); 
   
     let json = await response.json();
-    // console.log('topics json',json)
-    // console.log('topic id', json.topics[0].id);
+    console.log('topics json',json)
+    console.log('topic id', json.topics[0].id);
     setTopics(json.topics)
     return json;
   }
 
     const CLIENT_ID = '268425863623-r7oavatem0cs8df8n7j9mq4lc9iq2l21.apps.googleusercontent.com'
+    
 
     useGoogleOneTapLogin({
       onSuccess: (credentialResponse) => {
         setUser(jwt_decode(credentialResponse.credential))
+        console.log('user', jwt_decode(credentialResponse.credential));
       },
       onError: () => {
         console.log('Login Failed');
       },
-    });
-
+    })
 
   return (
     <div className="App">
@@ -173,7 +175,7 @@ function App() {
           </div>
       }
 
-      { Object.keys(user).length !==0 && Object.keys(topics).length !==0 &&
+      { Object.keys(topics).length !==0 &&
         <>
           <Routes>
             <Route path='/' element={<Layout />}>
