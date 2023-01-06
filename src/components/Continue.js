@@ -1,7 +1,6 @@
 import React from 'react'
 import {AiOutlineLock} from 'react-icons/ai'
 import {IoMdCheckmarkCircleOutline} from 'react-icons/io'
-import {BsCircle} from 'react-icons/bs'
 import './Continue.css'
 import { Link } from 'react-router-dom'
 
@@ -60,10 +59,17 @@ export default function Continue({info, item, topics, setTopicId}) {
         </div>        
         <div className='continue_content'>
             {topics.map((item) => 
-            <Link to='/messages' key={item.id} className='content'>
+            <Link to='/messages' key={item.id} onClick={() => {
+                localStorage.setItem('topic_id', item.id)
+                setTopicId(localStorage.getItem('topic_id'))
+                }}  className='content'>
                 <div>
                     <div className='content_name'>
-                        <Link onClick={() => setTopicId(item.id)} className='to_messages' to='/messages'>{item.name}</Link>
+                        <Link onClick={() => {
+                            localStorage.setItem('topic_id', item.id)
+                            setTopicId(localStorage.getItem('topic_id'))
+                            }} 
+                        className='to_messages' to='/messages'>{item.name}</Link>
                         {/* <p>{item.lesson_time} min</p> */}
                     </div>
                     {item.isDeleted ? <AiOutlineLock values={{size: '36px'}}/> :  <IoMdCheckmarkCircleOutline/>}

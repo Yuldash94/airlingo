@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode'
-import { Routes, Route, Link } from 'react-router-dom';
-import { gapi } from 'gapi-script'
+import { Routes, Route, Link} from 'react-router-dom';
 import { GoogleLogin, useGoogleLogin, useGoogleOneTapLogin} from '@react-oauth/google'
 import Layout from './components/Layout';
 import HomePage from './components/HomePage';
@@ -13,6 +12,7 @@ import Messages from './components/Messages';
 
 function App() {
   const [user, setUser] = useState({})
+  const [userPhoto, setUserPhoto] = useState({})
   const [pageInfo, setPageInfo] = useState([
     {
       id: 1,
@@ -91,19 +91,23 @@ function App() {
   const [token, setToken] = useState ('')
   const [greeting, setGreeting] = useState(true) 
   
-  useEffect(()=> {
-    setToken(localStorage.getItem('access_token'))
-      loadTopics(token)
-  }, [token])
+  // useEffect(()=> {
+  //   if (!localStorage.getItem('access_token')) {
+  //     setToken(localStorage.getItem('access_token'))
+  //   }
+  //   loadTopics(token)
+  // }, [token])
 
   const onSuccess = (credentialResponse) => {
-      // console.log('cre response', credentialResponse)
+      console.log('cre response', credentialResponse)
       localStorage.setItem('access_token', credentialResponse.access_token)
       setToken(localStorage.getItem('access_token'))
       console.log('token id onSucces', credentialResponse.access_token);
       if (topics) {
         loadTopics(credentialResponse.access_token)
       }
+      loadUserInfo(credentialResponse.access_token)
+      loadUserPhoto(credentialResponse.access_token)
   }
 
   const login = useGoogleLogin({
@@ -112,8 +116,32 @@ function App() {
     flow: 'implicit',
   });
   
-
+  async function loadUserInfo(token) {
+    let response = await fetch('https://people.googleapis.com/v1/people/me?personFields=names', {
+      method: 'GET',
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+    })
+    let user = await response.json()
+    // console.log('userInfo', user.names[0])
+    setUser(user.names[0])
+    return user
+  }
  
+  async function loadUserPhoto(token) {
+    let response = await fetch('https://people.googleapis.com/v1/people/me?personFields=photos', {
+      method: 'GET',
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+    })
+    let userPhoto = await response.json()
+    // console.log('userPhoto', userPhoto.photos[0])
+    setUserPhoto(userPhoto.photos[0])
+    return userPhoto
+  }
+
   const [topics, setTopics] = useState({})
   const url = 'https://dev.airlingo.io/api/topics/'
 
@@ -123,29 +151,37 @@ function App() {
       headers: {
           Authorization: `Bearer ${token}`
       }
-  }); 
-  
-    let json = await response.json();
+    })
+    // .catch(err => {
+    //     localStorage.removeItem('access_token')
+    //     setToken('')
+    //   })
+
+    let json = await response.json()
+    // response.catch(err => localStorage.removeItem('access_token'))
     console.log('topics json',json)
     console.log('topic id', json.topics[0].id);
     setTopics(json.topics)
     return json;
   }
 
+
+
+
     const CLIENT_ID = '268425863623-r7oavatem0cs8df8n7j9mq4lc9iq2l21.apps.googleusercontent.com'
     
 
-    useGoogleOneTapLogin({
-      onSuccess: (credentialResponse) => {
-        setUser(jwt_decode(credentialResponse.credential))
-        console.log('user', jwt_decode(credentialResponse.credential));
-      },
-      onError: () => {
-        console.log('Login Failed');
-      },
-    })
-
-
+    // useGoogleOneTapLogin({
+    //   onSuccess: (credentialResponse) => {
+    //     setUser(jwt_decode(credentialResponse.credential))
+    //     console.log('user', jwt_decode(credentialResponse.credential));
+    //   },
+    //   onError: () => {
+    //     console.log('Login Failed');
+    //   },
+    // })
+    
+  
   return (
     <div className="App">
       {  !Object.keys(token).length && 
@@ -175,6 +211,7 @@ function App() {
               text='signin'
               native_callback={(credentialResponse) => credentialResponse.requestAccessToken()}
               nonce=''
+              flow='implict'
              /> */}
 
             </div>
@@ -190,8 +227,8 @@ function App() {
               {/* <Route path='/home' element={<HomePage user={user} info={pageInfo} setInfo={setPageInfo} login={login} />} />
               <Route path='/library' element={<LibraryPage user={user}/>} />
               <Route  path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart} topics={topics} setTopics={setTopics} loadTopics={loadTopics} token={token}/>} /> */}
-              <Route path='/topics' element={<Continue info={pageInfo} topics={topics} setTopicId={setTopicId}/>}/>
-              <Route path='/messages' element={<Messages token={token} user={user} info={pageInfo} setGreeting={setGreeting} greeting={greeting} topics={topics} setTopics={setTopics} loadTopics={loadTopics} topicId={topicId}/>}/>
+              <Route index={true} path='/topics' element={<Continue info={pageInfo} topics={topics} setTopicId={setTopicId}/>}/>
+              <Route path='/messages' element={<Messages token={token} user={user} userPhoto={userPhoto} info={pageInfo} setGreeting={setGreeting} greeting={greeting} topics={topics} setTopics={setTopics} loadTopics={loadTopics} topicId={topicId} setTopicId={setTopicId}/>}/>
             </Route>
           </Routes>
         </>

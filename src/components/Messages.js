@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import './Messages.css'
 import Greetings from './Greetings'
 import { Metrics } from './Metrics'
+import Continue from './Continue'
 
 
 //     const messagesExample = [
@@ -100,7 +101,7 @@ import { Metrics } from './Metrics'
 
 
 
-export default function Messages( {user, token, greeting, setGreeting, topics, setTopics, loadTopics, topicId}) {
+export default function Messages( {user, token, greeting, setGreeting, topics, setTopics, loadTopics, topicId, setTopicId, userPhoto}) {
     // const teacher = {
     //     id: 1 ,
     //     first_name: 'Alec',
@@ -121,6 +122,9 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             Authorization: `Bearer ${token}`
         }
     }
+
+
+
     // const urlUploadOptions = {
     //     method: 'POST',
     //     headers: {
@@ -135,12 +139,13 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     
 
 
-    // const urlMessages = `${url}${topics.topics[0].id}`
+
     async function loadMessages() {
         let response = await fetch(`${url}${topicId}/messages`, urlOptions)
 
         let json = await response.json()
         setMessages(json.messages)
+        
 
         return json
     }
@@ -175,7 +180,9 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
 
 
     useEffect(() => {
-    loadMessages()
+        // setTopicId(topicId)
+        // console.log('mes effect', topicId);
+        loadMessages()
     },[])
 
 
@@ -194,8 +201,11 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 </Link>
             </div>
             <div className='messages_head'>
-                <img src={user.picture} alt='user'></img>
-                <h3>{user.name}</h3>
+                {userPhoto.url && 
+                    <img src={userPhoto.url} alt=' '></img>
+                }
+                
+                <h3>{user.displayName}</h3>
             </div>
             <div className='messages_list'>
                 {messages.map(message => 
@@ -227,7 +237,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 <div className='messages_btns'>
                     <div className='keyboard' onClick={(e) => {
                         uploadMessages()
-                        console.log(message.value)
+                        // console.log(message.value)
                         document.getElementById("input").value = ''
                         }
                         }>
