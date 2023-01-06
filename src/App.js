@@ -99,10 +99,10 @@ function App() {
   // }, [token])
 
   const onSuccess = (credentialResponse) => {
-      console.log('cre response', credentialResponse)
+      // console.log('cre response', credentialResponse)
       localStorage.setItem('access_token', credentialResponse.access_token)
       setToken(localStorage.getItem('access_token'))
-      console.log('token id onSucces', credentialResponse.access_token);
+      // console.log('token id onSucces', credentialResponse.access_token);
       loadTopics(localStorage.getItem('access_token'))
       loadUserInfo(localStorage.getItem('access_token'))
       loadUserPhoto(localStorage.getItem('access_token'))
