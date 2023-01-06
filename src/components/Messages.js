@@ -102,14 +102,7 @@ import Continue from './Continue'
 
 
 export default function Messages( {user, token, greeting, setGreeting, topics, setTopics, loadTopics, topicId, setTopicId, userPhoto}) {
-    // const teacher = {
-    //     id: 1 ,
-    //     first_name: 'Alec',
-    //     second_name: 'Underwood',
-    //     full_name: 'Alec Underwood',
-    //     picture: 'alec.png'
-    // }
-    // console.log('token', token);
+
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
     const [metrics, setMetrics] = useState(false)
@@ -119,36 +112,22 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     const urlOptions = {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`
         }
     }
 
-
-
-    // const urlUploadOptions = {
-    //     method: 'POST',
-    //     headers: {
-    //         Authorization: `Bearer ${token}`,
-    //         Accept: 'application/json',
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body:  JSON.stringify({
-    //         "text": `${message}`,
-    //     }),
-    // }
-    
-
-
-
     async function loadMessages() {
+        setLoading(true)
         let response = await fetch(`${url}${topicId}/messages`, urlOptions)
-
+        if (!response.ok) {
+            localStorage.setItem('access_token', '')
+          } else if (response.ok) {
+            setLoading(false)
+          }
         let json = await response.json()
         setMessages(json.messages)
-        
-
         return json
-    }
+    }                   
 
     async function deleteMessages() {
         await fetch(`${url}${topicId}/messages`, {
@@ -157,11 +136,10 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 Authorization: `Bearer ${token}`
             }
         })
-        loadMessages()
     }
 
      
-    async function uploadMessages() {
+    async function uploadMessages(token) {
         setLoading(true)
         await fetch(`${url}${topicId}/messages`, {
             method: 'POST',
@@ -180,8 +158,6 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
 
 
     useEffect(() => {
-        // setTopicId(topicId)
-        // console.log('mes effect', topicId);
         loadMessages()
     },[])
 
@@ -201,11 +177,11 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 </Link>
             </div>
             <div className='messages_head'>
-                {userPhoto.url && 
-                    <img src={userPhoto.url} alt=' '></img>
+                {userPhoto && 
+                    <img src={userPhoto} alt=' '></img>
                 }
                 
-                <h3>{user.displayName}</h3>
+                <h3>{user}</h3>
             </div>
             <div className='messages_list'>
                 {messages.map(message => 
@@ -236,7 +212,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                     }}/>
                 <div className='messages_btns'>
                     <div className='keyboard' onClick={(e) => {
-                        uploadMessages()
+                        uploadMessages(localStorage.getItem('access_token'))
                         // console.log(message.value)
                         document.getElementById("input").value = ''
                         }

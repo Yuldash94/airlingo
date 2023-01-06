@@ -95,7 +95,7 @@ function App() {
   //   if (!localStorage.getItem('access_token')) {
   //     setToken(localStorage.getItem('access_token'))
   //   }
-  //   loadTopics(token)
+  //   loadTopics(localStorage.getItem('access_token'))
   // }, [token])
 
   const onSuccess = (credentialResponse) => {
@@ -103,11 +103,9 @@ function App() {
       localStorage.setItem('access_token', credentialResponse.access_token)
       setToken(localStorage.getItem('access_token'))
       console.log('token id onSucces', credentialResponse.access_token);
-      if (topics) {
-        loadTopics(credentialResponse.access_token)
-      }
-      loadUserInfo(credentialResponse.access_token)
-      loadUserPhoto(credentialResponse.access_token)
+      loadTopics(localStorage.getItem('access_token'))
+      loadUserInfo(localStorage.getItem('access_token'))
+      loadUserPhoto(localStorage.getItem('access_token'))
   }
 
   const login = useGoogleLogin({
@@ -125,7 +123,8 @@ function App() {
     })
     let user = await response.json()
     // console.log('userInfo', user.names[0])
-    setUser(user.names[0])
+    localStorage.setItem('user_name', user.names[0].displayName)
+    setUser(user.names[0].displayName)
     return user
   }
  
@@ -138,29 +137,27 @@ function App() {
     })
     let userPhoto = await response.json()
     // console.log('userPhoto', userPhoto.photos[0])
-    setUserPhoto(userPhoto.photos[0])
+    localStorage.setItem('user_photo', userPhoto.photos[0].url)
+    setUserPhoto(userPhoto.photos[0].url)
     return userPhoto
   }
 
-  const [topics, setTopics] = useState({})
+  const [topics, setTopics] = useState([])
   const url = 'https://dev.airlingo.io/api/topics/'
 
   async function loadTopics(token) {
     let response = await fetch(url, {
       method: 'GET',
       headers: {
-          Authorization: `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
       }
     })
-    // .catch(err => {
-    //     localStorage.removeItem('access_token')
-    //     setToken('')
-    //   })
-
+    if (!response.ok) {
+      localStorage.setItem('access_token', '')
+    }
     let json = await response.json()
-    // response.catch(err => localStorage.removeItem('access_token'))
-    console.log('topics json',json)
-    console.log('topic id', json.topics[0].id);
+    // console.log('topics json',json)
+    // console.log('topic id', json.topics[0].id);
     setTopics(json.topics)
     return json;
   }
@@ -184,7 +181,7 @@ function App() {
   
   return (
     <div className="App">
-      {  !Object.keys(token).length && 
+      {  localStorage.getItem('access_token') === '' &&
             <div id='App_greetings'>
             <img className='logo' src='./img/airlingo_logo.png' alt='logo'></img>
             <p className='companion'>Your AI training companion</p>
@@ -220,14 +217,14 @@ function App() {
           </div>
       }
 
-      { Object.keys(topics).length !==0 &&
+      { localStorage.getItem('access_token') !== '' && Object.keys(topics) !== 0 &&
         <>
           <Routes>
             <Route path='/' element={<Layout />}>
               {/* <Route path='/home' element={<HomePage user={user} info={pageInfo} setInfo={setPageInfo} login={login} />} />
               <Route path='/library' element={<LibraryPage user={user}/>} />
               <Route  path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart} topics={topics} setTopics={setTopics} loadTopics={loadTopics} token={token}/>} /> */}
-              <Route index={true} path='/topics' element={<Continue info={pageInfo} topics={topics} setTopicId={setTopicId}/>}/>
+              <Route index={true} path='/topics' element={<Continue info={pageInfo} topics={topics} setTopicId={setTopicId} loadTopics={loadTopics}  setUserPhoto={setUserPhoto} setUser={setUser}/>}/>
               <Route path='/messages' element={<Messages token={token} user={user} userPhoto={userPhoto} info={pageInfo} setGreeting={setGreeting} greeting={greeting} topics={topics} setTopics={setTopics} loadTopics={loadTopics} topicId={topicId} setTopicId={setTopicId}/>}/>
             </Route>
           </Routes>
