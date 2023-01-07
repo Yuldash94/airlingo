@@ -143,8 +143,7 @@ function App() {
   }
 
   const [topics, setTopics] = useState([])
-  const baseUrl = process.env.REACT_APP_BASE_URL
-  const url = `${baseUrl}/api/topics/`
+  const url = 'https://dev.airlingo.io/api/topics/'
 
   async function loadTopics(token) {
     let response = await fetch(url, {
