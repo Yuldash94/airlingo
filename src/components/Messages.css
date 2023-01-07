@@ -100,6 +100,7 @@
     background: #E6A084;
     color: #11273E;
     border-radius: 5px 5px 5px 0px;
+    cursor: pointer;
 }
 
 .message_left::after, .message_left::before {
@@ -221,14 +222,17 @@
     justify-content: center;
     border: 3px solid #999999;
     font-size: 36px;
+
 }
 
 .keyboard {
     font-size: 24px;
     color: #3F434A;
+    cursor: pointer;
 }
 
 .hint {
     font-size: 24px;
     color: #000000;
+
 }
