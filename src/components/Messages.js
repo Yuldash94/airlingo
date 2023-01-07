@@ -108,7 +108,8 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     const [metrics, setMetrics] = useState(false)
     const [metric, setMetric] = useState({})
     const [loading, setLoading] = useState(false)
-    const url = 'https://dev.airlingo.io/api/topics/'
+    const baseUrl = process.env.REACT_APP_BASE_URL
+    const url = `${baseUrl}/api/topics/`
     const urlOptions = {
         method: 'GET',
         headers: {
@@ -136,6 +137,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 Authorization: `Bearer ${token}`
             }
         })
+        loadMessages()
     }
 
      
