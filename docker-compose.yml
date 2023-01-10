@@ -1,0 +1,16 @@
+version: '3.5'
+services:
+  airlingo-frontend:
+    build: "."
+    container_name: airlingo-frontend-${ENV}
+    env_file:
+      - app.env
+    ports:
+      - '${HOSTED_PORT}:3000'
+    networks:
+      - airlingo-net-${ENV}
+networks:
+  airlingo-net-dev:
+    name: airlingo-shared-net-dev
+  airlingo-net-prod:
+    name: airlingo-shared-net-prod
