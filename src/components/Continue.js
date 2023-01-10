@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import {AiOutlineLock} from 'react-icons/ai'
 import {IoMdCheckmarkCircleOutline} from 'react-icons/io'
 import './Continue.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate  } from 'react-router-dom'
 
 
 export default function Continue({info, item, topics, setTopicId ,loadTopics, setUserPhoto, setUser}) {
@@ -13,6 +13,8 @@ export default function Continue({info, item, topics, setTopicId ,loadTopics, se
         setUserPhoto(localStorage.getItem('user_photo'))
     },[])
 
+    const navigate = useNavigate()
+    const handleTopicClick = useCallback(() => navigate('/messages', {replace: true}), [navigate])
 
 
   return (
@@ -22,9 +24,10 @@ export default function Continue({info, item, topics, setTopicId ,loadTopics, se
         </div>        
         <div className='continue_content'>
             {topics.map((item) => 
-            <Link to='/messages' key={item.id} onClick={() => {
+            <div to='/messages' key={item.id} onClick={() => {
                 localStorage.setItem('topic_id', item.id)
                 setTopicId(localStorage.getItem('topic_id'))
+                handleTopicClick()
                 }}  className='content'>
                 <div>
                     <div className='content_name'>
@@ -37,7 +40,7 @@ export default function Continue({info, item, topics, setTopicId ,loadTopics, se
                     </div>
                     {item.isDeleted ? <AiOutlineLock values={{size: '36px'}}/> :  <IoMdCheckmarkCircleOutline/>}
                 </div>
-            </Link>
+            </div>
             )}
         </div>
     </div>

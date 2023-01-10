@@ -12,94 +12,6 @@ import { Metrics } from './Metrics'
 import Continue from './Continue'
 
 
-//     const messagesExample = [
-//     {
-//       "type": "FromUser",
-//       "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//       "creationTime": "2022-12-03T17:20:00.1696629Z12",
-//       "audioId": null,
-//       "text": "Hello"
-//     },
-//     {
-//         "type": "FromCustomer",
-//         "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//         "creationTime": "2022-12-03T17:20:00.1696629Z11",
-//         "audioId": null,
-//         "text": "Hi, welcome to Sunset Hotel. How may I help you?"
-//     },
-//     {
-//         "type": "Information",
-//         "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//         "creationTime": "2022-12-03T17:20:00.1696629Z0",
-//         "audioId": null,
-//         "text": "Message text is here"
-//     },
-//     {
-//         "type": "FromUser",
-//         "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//         "creationTime": "2022-12-03T17:20:00.1696629Z9",
-//         "audioId": null,
-//         "text": "Message text is here"
-//     },
-//     {
-//         "type": "FromCustomer",
-//         "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//         "creationTime": "2022-12-03T17:20:00.1696629Z8",
-//         "audioId": null,
-//         "text": "Message text is here"
-//     },
-//     {
-//         "type": "Information",
-//         "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//         "creationTime": "2022-12-03T17:20:00.1696629Z7",
-//         "audioId": null,
-//         "text": "Message text is here"
-//     },
-//     {
-//     "type": "FromUser",
-//     "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//     "creationTime": "2022-12-03T17:20:00.1696629Z6",
-//     "audioId": null,
-//     "text": "Message text is here"
-//     },
-//     {
-//         "type": "FromCustomer",
-//         "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//         "creationTime": "2022-12-03T17:20:00.1696629Z5",
-//         "audioId": null,
-//         "text": "Message text is here"
-//     },
-//     {
-//         "type": "Information",
-//         "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//         "creationTime": "2022-12-03T17:20:00.1696629Z4",
-//         "audioId": null,
-//         "text": "Message text is here"
-//     },
-//     {
-//     "type": "FromUser",
-//     "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//     "creationTime": "2022-12-03T17:20:00.1696629Z3",
-//     "audioId": null,
-//     "text": "Message text is here"
-//     },
-//     {
-//         "type": "FromCustomer",
-//         "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//         "creationTime": "2022-12-03T17:20:00.1696629Z2",
-//         "audioId": null,
-//         "text": "Message text is here"
-//     },
-//     {
-//         "type": "Information",
-//         "id": "6a4c1256-1c8c-4fbe-bd9f-4330198a468f",
-//         "creationTime": "2022-12-03T17:20:00.1696629Z1",
-//         "audioId": null,
-//         "text": "Message text is here"
-//     },
-// ]
-
-
 
 export default function Messages( {user, token, greeting, setGreeting, topics, setTopics, loadTopics, topicId, setTopicId, userPhoto}) {
 
@@ -108,6 +20,9 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     const [metrics, setMetrics] = useState(false)
     const [metric, setMetric] = useState({})
     const [loading, setLoading] = useState(false)
+
+
+
     const baseUrl = process.env.REACT_APP_BASE_URL
     const url = `${baseUrl}/api/topics/`
     const urlOptions = {
@@ -139,7 +54,6 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         })
         loadMessages()
     }
-
      
     async function uploadMessages(token) {
         setLoading(true)
@@ -156,8 +70,6 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         }).then(()=> setLoading(false))
         loadMessages()
     }
-
-
 
     useEffect(() => {
         loadMessages()
