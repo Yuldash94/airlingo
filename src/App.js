@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode'
 import { Routes, Route, Link} from 'react-router-dom';
-import { GoogleLogin, useGoogleLogin, useGoogleOneTapLogin} from '@react-oauth/google'
+import { GoogleLogin, useGoogleLogin} from '@react-oauth/google'
 import Layout from './components/Layout';
-import HomePage from './components/HomePage';
-import LibraryPage from './components/LibraryPage';
-import ProfilePage from './components/ProfilePage';
+// import HomePage from './components/HomePage';
+// import LibraryPage from './components/LibraryPage';
+// import ProfilePage from './components/ProfilePage';
 import Continue from './components/Continue';
 import './App.css';
 import Messages from './components/Messages';
@@ -91,12 +91,11 @@ function App() {
   const [token, setToken] = useState ('')
   const [greeting, setGreeting] = useState(true) 
   
-  // useEffect(()=> {
-  //   if (!localStorage.getItem('access_token')) {
-  //     setToken(localStorage.getItem('access_token'))
-  //   }
-  //   loadTopics(localStorage.getItem('access_token'))
-  // }, [token])
+  useEffect(()=> {
+    if (!localStorage.getItem('access_token')){
+      localStorage.setItem('access_token', '')
+    }
+  }, [])
 
   const onSuccess = (credentialResponse) => {
       // console.log('cre response', credentialResponse)
@@ -163,31 +162,16 @@ function App() {
     return json;
   }
 
-
-
-
-    const CLIENT_ID = '268425863623-r7oavatem0cs8df8n7j9mq4lc9iq2l21.apps.googleusercontent.com'
-    
-
-    // useGoogleOneTapLogin({
-    //   onSuccess: (credentialResponse) => {
-    //     setUser(jwt_decode(credentialResponse.credential))
-    //     console.log('user', jwt_decode(credentialResponse.credential));
-    //   },
-    //   onError: () => {
-    //     console.log('Login Failed');
-    //   },
-    // })
     
   
   return (
     <div className="App">
-      {  localStorage.getItem('access_token') === '' &&
+      {  localStorage.getItem('access_token') === '' && 
             <div id='App_greetings'>
             <img className='logo' src='./img/airlingo_logo.png' alt='logo'></img>
             <p className='companion'>Your AI training companion</p>
             <div id='signInDiv'>
-              <Link to='/topics' className='login_btn' onClick={() => {
+              <Link to='/' className='login_btn' onClick={() => {
                 login()
                 }}>
                   Login
@@ -225,7 +209,7 @@ function App() {
               {/* <Route path='/home' element={<HomePage user={user} info={pageInfo} setInfo={setPageInfo} login={login} />} />
               <Route path='/library' element={<LibraryPage user={user}/>} />
               <Route  path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart} topics={topics} setTopics={setTopics} loadTopics={loadTopics} token={token}/>} /> */}
-              <Route index={true} path='/topics' element={<Continue info={pageInfo} topics={topics} setTopicId={setTopicId} loadTopics={loadTopics}  setUserPhoto={setUserPhoto} setUser={setUser}/>}/>
+              <Route path='/' element={<Continue info={pageInfo} topics={topics} setTopicId={setTopicId} loadTopics={loadTopics}  setUserPhoto={setUserPhoto} setUser={setUser}/>}/>
               <Route path='/messages' element={<Messages token={token} user={user} userPhoto={userPhoto} info={pageInfo} setGreeting={setGreeting} greeting={greeting} topics={topics} setTopics={setTopics} loadTopics={loadTopics} topicId={topicId} setTopicId={setTopicId}/>}/>
             </Route>
           </Routes>

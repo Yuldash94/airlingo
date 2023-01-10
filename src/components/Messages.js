@@ -172,7 +172,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             <div className='messages'>
                 <TiDocumentDelete className='delete' onClick={() => deleteMessages()}/>
             <div className='close'>
-                <Link to='/topics'>
+                <Link to='/'>
                     <div className='messages_close' onClick={() => setGreeting(true)}>
                         <RxCross2 />
                     </div>
