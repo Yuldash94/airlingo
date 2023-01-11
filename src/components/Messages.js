@@ -6,6 +6,7 @@ import { FaRegKeyboard } from 'react-icons/fa'
 import { TiDocumentDelete } from 'react-icons/ti'
 import { TbBulb } from 'react-icons/tb'
 import { Link } from 'react-router-dom'
+import ScaleLoader from 'react-spinners/ScaleLoader'
 import './Messages.css'
 import Greetings from './Greetings'
 import { Metrics } from './Metrics'
@@ -134,7 +135,11 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                         }
                     </div>    
                 )}
-                {loading && <div className='preloader'>Message is loading...</div>}
+                {loading && 
+                    <div className='preloader'>
+                         <p>Message is loading...</p>
+                         <ScaleLoader color="#11273E"  />
+                    </div>}
                 <div id='messages_end'></div>
             </div>
 

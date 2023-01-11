@@ -75,7 +75,7 @@
     justify-content: flex-start;
     gap: 1rem;
     /* margin-bottom: 100px; */
-    padding-bottom: 110px;
+    padding-bottom: 190px;
     overflow-y: scroll;
 }
 
@@ -244,4 +244,9 @@
     position: relative;
     font-size: 26px;
     align-self: center;
+    display: flex;  
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 80px;
 }
