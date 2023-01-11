@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import  { RxCross2 } from 'react-icons/rx'
 import { AiFillSound, AiFillAudio } from 'react-icons/ai'
@@ -21,6 +21,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     const [metric, setMetric] = useState({})
     const [loading, setLoading] = useState(false)
 
+    const messageRef = useRef(null)
 
 
     const baseUrl = process.env.REACT_APP_BASE_URL
@@ -42,6 +43,8 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
           }
         let json = await response.json()
         setMessages(json.messages)
+
+        // handleMessagetToBottom()
         return json
     }                   
 
@@ -53,6 +56,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             }
         })
         loadMessages()
+
     }
      
     async function uploadMessages(token) {
@@ -69,11 +73,23 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             }),
         }).then(()=> setLoading(false))
         loadMessages()
+        // handleMessagetToBottom()
     }
 
     useEffect(() => {
         loadMessages()
+        
     },[])
+    
+    function handleMessagetToBottom() {
+        const messages_end = document.getElementById('messages_end')
+        messages_end.scrollIntoView({block: "start", behavior: "smooth" })
+     }
+
+    useEffect(() => {
+        handleMessagetToBottom()
+    }, [messages])
+
 
 
   return (
@@ -97,13 +113,15 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 
                 <h3>{user}</h3>
             </div>
-            <div className='messages_list'>
+            <div className='messages_list' id='messages_list'>
                 {messages.map(message => 
                     <div key={message.creationTime} 
+                    ref={messageRef}
                     className={message.type === 'FromCustomer' ? 'message message_right' : message.type==='FromUser' ? 'message message_left' : 'message message_center'}
                     onClick={() => {if (message.type === 'FromUser') {
                         setMetrics(true)
                         setMetric(message.metrics)
+                        console.log('ref', messageRef.current);
                     } 
                     }}
                     >
@@ -116,8 +134,10 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                         }
                     </div>    
                 )}
-                {loading && <p>Message is loading...</p>}
+                {loading && <div className='preloader'>Message is loading...</div>}
+                <div id='messages_end'></div>
             </div>
+
             <Metrics active={metrics} setActive={setMetrics} metric={metric} setMetric={setMetric}/>
 
             <div className='messages_bottom'>
@@ -129,7 +149,9 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                         uploadMessages(localStorage.getItem('access_token'))
                         // console.log(message.value)
                         document.getElementById("input").value = ''
+                        handleMessagetToBottom()
                         }
+                        
                         }>
                         <FaRegKeyboard/>
                     </div>
