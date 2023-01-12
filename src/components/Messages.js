@@ -49,7 +49,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         return json
     }                   
 
-    async function deleteMessages() {
+    async function deleteMessages(token) {
         await fetch(`${url}${topicId}/messages`, {
             method: 'DELETE',
             headers: {
@@ -99,7 +99,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             <Greetings greeting={greeting} setGreeting={setGreeting}/>
             : ""} */}
             <div className='messages'>
-                <TiDocumentDelete className='delete' onClick={() => deleteMessages()}/>
+                <TiDocumentDelete className='delete' onClick={() => deleteMessages(localStorage.getItem('access_token'))}/>
             <div className='close'>
                 <Link to='/'>
                     <div className='messages_close' onClick={() => setGreeting(true)}>
@@ -135,10 +135,10 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                         }
                     </div>    
                 )}
-                {loading && 
+                {!loading && 
                     <div className='preloader'>
                          <p>Message is loading...</p>
-                         <ScaleLoader color="#11273E"  />
+                         <ScaleLoader color="#11273E" size={250} />
                     </div>}
                 <div id='messages_end'></div>
             </div>
