@@ -135,7 +135,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                         }
                     </div>    
                 )}
-                {!loading && 
+                {loading && 
                     <div className='preloader'>
                          <p>Message is loading...</p>
                          <ScaleLoader color="#11273E" size={250} />
