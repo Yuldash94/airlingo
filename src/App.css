@@ -24,7 +24,8 @@ font-family: 'Gilroy-Regular', sans-serif;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem;
+  padding: 0 2rem;
+  gap: 1rem;
 }
 
 .logo {
@@ -38,6 +39,7 @@ font-family: 'Gilroy-Regular', sans-serif;
   font-size: 32px;
   text-align: center;
   letter-spacing: 0.1em;
+  margin-bottom: 5rem;
 }
 
 .or {

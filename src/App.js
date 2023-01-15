@@ -157,7 +157,6 @@ function App() {
     }
     let json = await response.json()
     // console.log('topics json',json)
-    // console.log('topic id', json.topics[0].id);
     setTopics(json.topics)
     return json;
   }
@@ -166,7 +165,7 @@ function App() {
   
   return (
     <div className="App">
-      {  localStorage.getItem('access_token') === '' && 
+      {  !localStorage.getItem('access_token') && localStorage.getItem('access_token') === '' ? 
             <div id='App_greetings'>
             <img className='logo' src='./img/airlingo_logo.png' alt='logo'></img>
             <p className='companion'>Your AI training companion</p>
@@ -198,11 +197,12 @@ function App() {
 
             </div>
             <p className='or '>or</p>
-            <a className='create_account' href=' # ' >Create an account</a>
-          </div>
-      }
+            <a className='create_account' href='  ' >Create an account</a>
+          </div> 
+          :
+      
 
-      { localStorage.getItem('access_token') !== '' && Object.keys(topics) !== 0 &&
+       localStorage.getItem('access_token') !== '' && Object.keys(topics) !== 0 ?
         <>
           <Routes>
             <Route path='/' element={<Layout />}>
@@ -214,6 +214,7 @@ function App() {
             </Route>
           </Routes>
         </>
+        : null
       }
       
     </div>

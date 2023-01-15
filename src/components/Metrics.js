@@ -9,6 +9,9 @@ export const Metrics = ({active, setActive, metric, setMetric}) => {
         setActive(false) 
         setMetric({})}}>
         <div className='metrics_content' onClick={e => e.stopPropagation()}>
+            {/* <p>RECOMMENDATION</p>
+            <p>{metric.general_recommendations}</p>
+            <p>sentiment: {metric.sentiment}</p> */}
             {Object.entries(metric).map( ([key, value]) => 
                 <div key={key}>
                     <p>{key}: {value}</p>

@@ -1,4 +1,4 @@
-.metrics {
+.tips {
     height: 100vh;
     width: 100vw;
     background-color: rgba(255,255,255,0.4);
@@ -10,17 +10,25 @@
     z-index: 5;
 }
 
-.metrics.active {
+.tips.active {
     transform: scale(1);
 }
 
-.metrics_content {
+.tips_content {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
     width: 348px;
     height: auto;
     padding: 1rem;
     border-radius: 7px;
-    background: #11273E;
-    color: #FFFFFF;
+    background: #FFFFFF;
+    color: #11273E;
     font-family: 'Gilroy-Medium';
+    font-size: 40px;
+}
+
+.tips_content > p {
+    width: 80%;
     font-size: 20px;
 }
