@@ -51,7 +51,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
           }
         let json = await response.json()
         setMessages(json.messages)
-        handleSetTip()
+        handleSetTip(json.messages)
         // console.log(json.messages);
 
         // handleMessagetToBottom()
@@ -66,7 +66,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             }
         })
         loadMessages()
-
+        setTips([])
     }
      
     async function uploadMessages(token) {
@@ -86,10 +86,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         // handleMessagetToBottom()
     }
 
-    useEffect(() => {
-        loadMessages()
-        
-    },[])
+
     
     function handleMessagetToBottom() {
         const messages_end = document.getElementById('messages_end')
@@ -98,18 +95,23 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
 
      function handleMessageTips() {
         setActive(true)
-        handleSetTip()
+        handleSetTip(messages)
     }
 
-    const handleSetTip = () => {
+    function handleSetTip(messages) {
         setTips(messages)
         const messageTips = tips.filter(message => message.type === 'FromUser' ) 
         const lastTip = messageTips.pop()
         // console.log('tips', messageTips);
         // console.log('last tip', lastTip);
-        setTip(lastTip.expectedMessage)
+        if (lastTip) {
+            setTip(lastTip.expectedMessage)
+        }
+
     }
-    
+    useEffect(() => {
+        loadMessages()  
+    },[])
     useEffect(() => {
         handleMessagetToBottom()
     }, [messages])
@@ -150,7 +152,6 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                     onClick={() => {if (message.type === 'FromUser') {
                         setMetrics(true)
                         setMetric(message.metrics)
-                        // console.log('ref', messageRef.current);
                     } 
                     }}
                     >
@@ -171,7 +172,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 <div id='messages_end'></div>
             </div>
 
-            <Metrics active={metrics} setActive={setMetrics} metric={metric} setMetric={setMetric}/>
+            {metrics ? <Metrics active={metrics} setActive={setMetrics} metric={metric} setMetric={setMetric}/> : null}
             {active ? <Tips tip={tip} setTip={setTip} active={active} setActive={setActive}/> : null}
             <div className='messages_bottom'>
                 <div className='message_input'>

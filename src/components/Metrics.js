@@ -9,14 +9,17 @@ export const Metrics = ({active, setActive, metric, setMetric}) => {
         setActive(false) 
         setMetric({})}}>
         <div className='metrics_content' onClick={e => e.stopPropagation()}>
-            {/* <p>RECOMMENDATION</p>
-            <p>{metric.general_recommendations}</p>
-            <p>sentiment: {metric.sentiment}</p> */}
-            {Object.entries(metric).map( ([key, value]) => 
+            <p>RECOMMENDATION</p>
+            {metric['general-recommendations'].split('.').map((item) => 
+              <p key={item}>{item}</p>
+            )}
+            {/* <p>{metric['general-recommendations']}</p> */}
+            <p>sentiment: {metric.sentiment}</p>
+            {/* {Object.entries(metric).map( ([key, value]) => 
                 <div key={key}>
                     <p>{key}: {value}</p>
                 </div>
-            )}
+            )} */}
         </div>
     </div>
   )
