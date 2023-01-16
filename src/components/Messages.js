@@ -181,11 +181,12 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                     }}/>
                 <AiOutlineSend className='message_send'
                 onClick={(e) => {
-                    uploadMessages(localStorage.getItem('access_token'))
-                    // console.log(message.value)
-                    document.getElementById("input").value = ''
-                    handleMessagetToBottom()
-                    }
+                    if (document.getElementById("input").value) {
+                        uploadMessages(localStorage.getItem('access_token'))
+                        // console.log(message.value)
+                        document.getElementById("input").value = ''
+                        handleMessagetToBottom()
+                    }}
                     
                     }/>
                 </div>
