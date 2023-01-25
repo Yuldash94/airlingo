@@ -72,19 +72,22 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     }
      
     async function uploadMessages(token) {
-        setLoading(true)
-        await fetch(`${url}${topicId}/messages`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body:  JSON.stringify({
-                "text": `${message.value}`,
-            }),
-        }).then(()=> setLoading(false))
-        loadMessages()
+        if (message.value) {
+            setLoading(true)
+            await fetch(`${url}${topicId}/messages`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body:  JSON.stringify({
+                    "text": `${message.value}`,
+                }),
+            }).then(()=> setLoading(false))
+            loadMessages()
+        }
+
         // handleMessagetToBottom()
     }
 
@@ -171,12 +174,13 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                          <p>Message is loading...</p>
                          <ScaleLoader color="#11273E" size={250} />
                     </div>}
+                {audio ? <audio src={audio} controls></audio> : null }
                 <div id='messages_end'></div>
             </div>
 
             {metrics ? <Metrics active={metrics} setActive={setMetrics} metric={metric} setMetric={setMetric}/> : null}
             {active ? <Tips tip={tip} setTip={setTip} active={active} setActive={setActive}/> : null}
-            
+
             <div className='messages_bottom'>   
                 <div className='message_input'>
                 <input id='input' placeholder='Write your message' ref={ref => {
@@ -193,7 +197,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                     
                     }/>
                 </div>
-                {audio ? <audio src={audio} controls loop></audio> : null }
+                
                 <div className='messages_btns'>
                     <div className='keyboard' >
                         <FaRegKeyboard/>

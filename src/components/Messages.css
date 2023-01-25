@@ -103,7 +103,6 @@
     background: #11273E;
     color: #FFFFFF;
     border-radius: 5px 5px 5px 0px;
-    cursor: pointer;
     z-index: 2  ;
 }
 
@@ -131,6 +130,7 @@
     color: #11273E;
     border-radius: 5px 5px 0px 5px; 
     z-index: 2  ;
+    cursor: pointer;
 }
 
 .message_right::after, .message_right::before {
@@ -197,25 +197,24 @@
 }
 
 .message_input {
-    width: 90%;
+    width: 95%;
     height: 40px;
     border: none;
     border-radius: 7px;
     background: #f6f6f6;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     font-size: 26px;
 }
 
 .message_input > input {
-    width: 90%;
+    width: 80%;
     height: 40px;
     border: none;
     border-radius: 7px;
     background: #f6f6f6;
     font-size: 19px;
-    padding-left: 1rem;
     color: #11273E;
     font-family: 'Gilroy-Medium';
 }
@@ -240,6 +239,7 @@
     justify-content: center;
     border: 3px solid #999999;
     font-size: 36px;
+    cursor: pointer;
 }
 
 .keyboard {
@@ -251,6 +251,7 @@
 .hint {
     font-size: 24px;
     color: #000000;
+    cursor: pointer;
 }
 
 .preloader {
@@ -266,6 +267,9 @@
     margin-bottom: 80px;
 }
 
+.message_send {
+    cursor: pointer;
+}
 audio {
 
 }
