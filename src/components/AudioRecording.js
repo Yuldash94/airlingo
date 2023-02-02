@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { AiFillAudio } from 'react-icons/ai'
 import { useReactMediaRecorder } from "react-media-recorder";
 
@@ -18,10 +18,12 @@ export default function AudioRecording( { setAudio } ) {
     const handleStopRecordAudio = () => {
         setRecording(false)
         stopRecording()
+
     }
 
     if (status === 'stopped' && mediaBlobUrl) {
         setAudio(mediaBlobUrl)
+        // console.log(mediaBlobUrl);
     }
 
   return (
