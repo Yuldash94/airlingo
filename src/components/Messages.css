@@ -270,9 +270,6 @@
 .message_send {
     cursor: pointer;
 }
-audio {
-
-}
 
 .recording_blink {
     animation-name: blinker;
@@ -293,4 +290,33 @@ to { opacity: 1.0; transform: scale(1.2);}
 @-webkit-keyframes blinker {
 from { opacity: 0.3; transform: scale(1);}
 to { opacity: 1.0; transform: scale(1.2);}
+}
+
+.evaluation {
+    width: 15px;
+    height: 15px;
+    font-size: 12px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    align-self: flex-start;
+    margin: 0 0 4px 8px;
+}
+
+.evaluation_0 {
+    background: #ff3000;
+}
+.evaluation_1 {
+    background: #ff7000;
+}
+.evaluation_2 {
+    background: #ffba00;
+}
+.evaluation_3 {
+    background: #ffa500;
+}
+.evaluation_4 {
+    background: #4eff79;
+}
+.evaluation_5 {
+    background: #1bff52;
 }

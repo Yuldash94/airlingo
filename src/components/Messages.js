@@ -55,7 +55,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         let json = await response.json()
         setMessages(json.messages)
         handleSetTip(json.messages)
-        // console.log(json.messages);
+        console.log(json.messages);
 
         // handleMessagetToBottom()
         return json
@@ -156,7 +156,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             </div>
             <div className='messages_list' id='messages_list'>
                 {messages.map(message => 
-                    <div key={message.creationTime} 
+                    <div key={message.id} 
                     ref={messageRef}
                     className={message.type === 'FromUser' ? 'message message_right' : message.type==='FromCustomer' ? 'message message_left' : 'message message_center'}
                     onClick={() => {if (message.type === 'FromUser') {
@@ -172,6 +172,12 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                                         </div>)
                                         : ''
                         } */}
+                        {message.type === 'FromUser' && message.metrics['general-evaluation'] === '0' ? <div className='evaluation evaluation_0' ></div> :
+                        message.type === 'FromUser' && message.metrics['general-evaluation'] === '1' ? <div className='evaluation evaluation_1' ></div> :
+                        message.type === 'FromUser' && message.metrics['general-evaluation'] === '2' ? <div className='evaluation evaluation_2' ></div> :
+                        message.type === 'FromUser' && message.metrics['general-evaluation'] === '3' ? <div className='evaluation evaluation_3' ></div> :
+                        message.type === 'FromUser' && message.metrics['general-evaluation'] === '4' ? <div className='evaluation evaluation_4' ></div> :
+                        message.type === 'FromUser' && message.metrics['general-evaluation'] === '5' ? <div className='evaluation evaluation_5' ></div> : null }
                     </div>    
                 )}
                 {loading && 

@@ -29,7 +29,7 @@ export default function Continue({info, item, topics, setTopicId ,loadTopics, se
                 localStorage.setItem('topic_id', item.id)
                 setTopicId(localStorage.getItem('topic_id'))
                 handleTopicClick()
-                }}  className='content' style={{backgroundColor: randomColor({luminosity: 'dark'})}}>
+                }}  className='content' style={{backgroundColor: item.color}}>
                 <div>
                     <div className='content_name'>
                         <Link onClick={() => {
