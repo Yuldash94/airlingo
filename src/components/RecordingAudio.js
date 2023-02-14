@@ -30,7 +30,7 @@ function RecordingAudio({setAudio}) {
     }
     if (status === 'stopped' && mediaBlob) {
         setAudio(mediaBlob)
-        console.log(mediaBlob);
+        // console.log(mediaBlob);
     }
     if (error) {
         alert('An unexpected error has occurred, please try again...', error)

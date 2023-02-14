@@ -165,7 +165,7 @@ function App() {
   
   return (
     <div className="App">
-      {  !localStorage.getItem('access_token') && localStorage.getItem('access_token') === '' ? 
+      {  !localStorage.getItem('access_token') && localStorage.getItem('access_token') === ''  ? 
             <div id='App_greetings'>
             <img className='logo' src='./img/airlingo_logo.png' alt='logo'></img>
             <p className='companion'>Your AI training companion</p>
@@ -209,7 +209,7 @@ function App() {
               {/* <Route path='/home' element={<HomePage user={user} info={pageInfo} setInfo={setPageInfo} login={login} />} />
               <Route path='/library' element={<LibraryPage user={user}/>} />
               <Route  path='/profile' element={<ProfilePage user={user} info={pageInfo} chart={chart} setChart={setChart} topics={topics} setTopics={setTopics} loadTopics={loadTopics} token={token}/>} /> */}
-              <Route path='/' element={<Continue info={pageInfo} topics={topics} setTopicId={setTopicId} loadTopics={loadTopics}  setUserPhoto={setUserPhoto} setUser={setUser}/>}/>
+              <Route path='/' element={<Continue info={pageInfo} topics={topics} setTopicId={setTopicId} loadTopics={loadTopics}  setUserPhoto={setUserPhoto} setUser={setUser} />}/>
               <Route path='/messages' element={<Messages token={token} user={user} userPhoto={userPhoto} info={pageInfo} setGreeting={setGreeting} greeting={greeting} topics={topics} setTopics={setTopics} loadTopics={loadTopics} topicId={topicId} setTopicId={setTopicId}/>}/>
             </Route>
           </Routes>

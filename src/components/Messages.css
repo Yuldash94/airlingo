@@ -185,7 +185,7 @@
 
 .messages_bottom {
     width: 100%;
-    height: 150px;
+    /* height: 150px; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -198,7 +198,8 @@
 
 .message_input {
     width: 95%;
-    height: 40px;
+    /* height: 40px; */
+    max-height: 90px;
     border: none;
     border-radius: 7px;
     background: #f6f6f6;
@@ -206,9 +207,10 @@
     align-items: center;
     justify-content: space-around;
     font-size: 26px;
+    margin: 5px 0;
 }
 
-.message_input > input {
+/* .message_input > input {
     width: 80%;
     height: 40px;
     border: none;
@@ -217,6 +219,18 @@
     font-size: 19px;
     color: #11273E;
     font-family: 'Gilroy-Medium';
+} */
+.input {
+    min-width: 80%;
+    width: 80%;
+    max-width: 80%;
+    border: none;
+    border-radius: 7px;
+    background: #f6f6f6;
+    font-size: 19px;
+    color: #11273E;
+    font-family: 'Gilroy-Medium';
+    resize: none;
 }
 
 .messages_btns {
@@ -228,6 +242,10 @@
     align-items: center;
     justify-content: space-evenly;
 
+}
+
+.messages_btns * {
+    color: #11273E;
 }
 
 .recording {
@@ -242,9 +260,9 @@
     cursor: pointer;
 }
 
-.keyboard {
+.to_home {
     font-size: 24px;
-    color: #3F434A;
+    color: #000000;
     cursor: pointer;
 }
 

@@ -3,7 +3,6 @@ import {AiOutlineLock} from 'react-icons/ai'
 import {FiCheckCircle, FiCircle} from 'react-icons/fi'
 import './Continue.css'
 import { Link, useNavigate  } from 'react-router-dom'
-import {randomColor} from 'randomcolor'
 
 
 export default function Continue({info, item, topics, setTopicId ,loadTopics, setUserPhoto, setUser}) {

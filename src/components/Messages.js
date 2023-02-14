@@ -3,7 +3,7 @@ import { useState } from 'react'
 import  { RxCross2 } from 'react-icons/rx'
 import { AiFillSound, AiOutlineSend} from 'react-icons/ai'
 import { FaRegKeyboard } from 'react-icons/fa'
-import { TiDocumentDelete } from 'react-icons/ti'
+import { TiDocumentDelete, TiHome } from 'react-icons/ti'
 import { TbBulb } from 'react-icons/tb'
 import { Link } from 'react-router-dom'
 import ScaleLoader from 'react-spinners/ScaleLoader'
@@ -12,8 +12,8 @@ import Greetings from './Greetings'
 import { Metrics } from './Metrics'
 import Continue from './Continue'
 import { Tips } from './Tips'
-import AudioRecording from './AudioRecording'
 import RecordingAudio from './RecordingAudio'
+import TextareaAutosize from 'react-textarea-autosize';
 
 
 
@@ -55,7 +55,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         let json = await response.json()
         setMessages(json.messages)
         handleSetTip(json.messages)
-        console.log(json.messages);
+        // console.log(json.messages);
 
         // handleMessagetToBottom()
         return json
@@ -116,18 +116,14 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
 
     }
     useEffect(() => {
-        loadMessages(topicId)  
-    }, [''])
+        setTopicId(localStorage.getItem('topic_id'))
+        loadMessages(localStorage.getItem('topic_id'))  
+    }, [ ])
 
     useEffect(() => {
         handleMessagetToBottom()
     }, [messages])
 
-    // if (audio && audio != null) {
-    //     setTimeout(() => {
-    //         setAudio(null)
-    //     }, 20000);
-    // }
   return (
     <>
         {/* {greeting ? 
@@ -142,13 +138,6 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                     </div>
                 </Link>
             </div>
-            {/* <div className='messages_head'>
-                {userPhoto && 
-                    <img src={userPhoto} alt=' '></img>
-                }
-                
-                <h3>{user}</h3>
-            </div> */}
             <div className='messages_head'>
                     <img src={guest.picture} alt=' '></img>
                 
@@ -185,7 +174,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                          <p>Message is loading...</p>
                          <ScaleLoader color="#11273E" size={250} />
                     </div>}
-                { audio && audio !== null ? <audio src={URL.createObjectURL(audio)} controls></audio> : null }
+                {/* { audio && audio !== null ? <audio src={URL.createObjectURL(audio)} controls></audio> : null } */}
                 <div id='messages_end'></div>
             </div>
 
@@ -194,9 +183,16 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
 
             <div className='messages_bottom'>   
                 <div className='message_input'>
-                <input id='input' placeholder='Write your message' ref={ref => {
+                {/* <input id='input' placeholder='Write your message' ref={ref => {
                     setMessage(ref)
-                    }}/>
+                    }}/> */}
+                    <TextareaAutosize
+                        id='input'
+                        className='input'
+                        ref={ref => setMessage(ref)}
+                        maxRows={2}
+                        placeholder='Write your message...' 
+                    />
                 <AiOutlineSend className='message_send'
                 onClick={(e) => {
                     if (document.getElementById("input").value) {
@@ -210,8 +206,8 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 </div>
                 
                 <div className='messages_btns'>
-                    <div className='keyboard' >
-                        <FaRegKeyboard/>
+                    <div className='to_home' >
+                        <Link to='/'> <TiHome/></Link>
                     </div>
                     <div className='recording'>
                         <RecordingAudio setAudio={setAudio}/>
