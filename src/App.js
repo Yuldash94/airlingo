@@ -156,7 +156,7 @@ function App() {
       localStorage.setItem('access_token', '')
     }
     let json = await response.json()
-    console.log('topics json',json)
+    // console.log('topics json',json)
     setTopics(json.topics)
     return json;
   }

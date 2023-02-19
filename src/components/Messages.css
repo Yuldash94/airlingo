@@ -93,6 +93,7 @@
 
 
 .message p {
+    width: 95%;
     padding: 0;
     margin: 7px;
     align-self: flex-start;
