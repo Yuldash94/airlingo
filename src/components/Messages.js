@@ -154,34 +154,25 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
     }
 
     async function loadAudio(audioID) {
-        let audioEl 
+        localStorage.setItem('audio_id', audioID)
+        let response = await fetch(`${urlForAudio}${audioID}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+            },
 
-        if (localStorage.getItem('audio_id') !== audioID) {
-            let response = await fetch(`${urlForAudio}${audioID}`, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-                },
-
-            })
-            if (response.ok) {
-                let result = await response.blob()
-                setAudioFile(result)
-                console.log('audioGET', result)
-                if (audioFile) {
-                    audioEl = document.getElementById(audioID)
-                    console.log("audioEl", audioEl);
-                    audioEl.autoplay = true
-                } 
-
-            } else {
-                console.log('error', response.status  );
+        })
+        if (response.ok) {
+            let result = await response.blob()
+            setAudioFile(result)
+            console.log('audioGET', result)
+            if (audioFile) {
+                audioRef.current.play()
             }
+
         } else {
-            audioEl.autoplay = true
+            console.log('error', response.status  );
         }
-        localStorage.setItem('audio_id', message.audioId)
-        audioEl.autoplay = false
     }
 
 
@@ -233,20 +224,18 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                                             className='audio' 
                                             onClick={ () => {
                                                 console.log('to_load_id', message.audioId);
-                                                loadAudio(message.audioId)
+                                                if (localStorage.getItem('audio_id') !== message.audioId) {
+                                                    loadAudio(message.audioId)
+                                                } else {
+                                                    audioRef.current.play()
+                                                }
+
+                                                
                                              }}
                                              >
                                             <AiFillSound/>
 
-                                            {audioFile ? 
-                                            <audio 
-                                                ref={audioRef}
-                                                id={message.audioId}
-                                                src={URL.createObjectURL(audioFile)} 
-                                                autoPlay
-                                            ></audio>
-                                            : null
-                                            }
+                                            
                                         </div>)
                                         : null
                         }
@@ -258,6 +247,13 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                         message.type === 'FromUser' && message.metrics['general-evaluation'] === '5' ? <div className='evaluation evaluation_5' ></div> : null }
                     </div>    
                 )}
+                                        {audioFile ? 
+                                            <audio 
+                                                ref={audioRef}
+                                                src={URL.createObjectURL(audioFile)} 
+                                            ></audio>
+                                            : null
+                                        }   
                 {loading && 
                     <div className='preloader'>
                          <p>Message is loading...</p>
