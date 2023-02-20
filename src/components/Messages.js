@@ -97,7 +97,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         }
     }
     async function uploadAudioMessages(audioId) {
-        if (audioId) {
+        if (audioId ) {
             setLoading(true)
             await fetch(`${url}${topicId}/messages`, {
                 method: 'POST',
@@ -149,7 +149,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         if (response.ok) {
             let result = await response.json()
             setAudioId(result.id)
-            // console.log('audioId:', result.id);
+            console.log('audioId:', result.id);
             // loadAudio(result.id)
             uploadAudioMessages(result.id)
         } else {
@@ -170,7 +170,8 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         if (response.ok) {
             let result = await response.blob()
             setAudioFile(result)
-            // console.log('audioGET', result)
+            console.log('audioGET', result)
+            
         } else {
             console.log('error', response.status  );
         }

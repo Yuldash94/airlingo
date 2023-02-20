@@ -78,7 +78,10 @@
     /* margin-bottom: 100px; */
     padding-bottom: 190px;
     overflow-y: scroll;
+    scrollbar-width: none;
 }
+
+
 
 .message {
     width: 60%;
@@ -232,6 +235,7 @@
     color: #11273E;
     font-family: 'Gilroy-Medium';
     resize: none;
+    scrollbar-width: none;
 }
 
 .messages_btns {

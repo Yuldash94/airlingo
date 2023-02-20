@@ -5,7 +5,7 @@ body {
 }
 
 #root{
-  min-width: 320px;
+  /* min-width: 320px; */
   max-width: 425px;
   /* width: 100vw; */
   height: 100%;
