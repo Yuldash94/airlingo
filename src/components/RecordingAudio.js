@@ -13,7 +13,7 @@ function RecordingAudio({setAudio, audio, baseUrl, uploadAudio}) {
         stopRecording,
         startRecording
       } = useMediaRecorder({
-        blobOptions: { type: 'audio/wav' },
+        blobOptions: { type: 'audio/ogg' },
         mediaStreamConstraints: { audio: true }
       });
       
@@ -34,11 +34,11 @@ function RecordingAudio({setAudio, audio, baseUrl, uploadAudio}) {
       setAudio(mediaBlob)
       let audioFile = new FormData() 
       if (audio !== mediaBlob && mediaBlob) {
-          console.log('mediaBlob:', mediaBlob);
-          console.log('data1', audioFile);
+          // console.log('mediaBlob:', mediaBlob);
+          // console.log('data1', audioFile);
           audioFile.set("formFile", mediaBlob)
           uploadAudio(audioFile)
-          console.log('data2', audioFile.get('formFile'))
+          // console.log('data2', audioFile.get('formFile'))
 
         }
     }

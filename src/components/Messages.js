@@ -107,10 +107,21 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                     'Content-Type': 'application/json',
                 },
                 body:  JSON.stringify({
-                    "audioId": audioId
+                    "audioId": `${audioId}`
                 }),
-            }).then(()=> setLoading(false))
-            loadMessages(topicId)
+            })
+            .then((res)=>{ 
+                if (res.ok) {
+                    setLoading(false)
+                    loadMessages(topicId)
+                } else {
+                    setLoading(false)
+                    console.log(res.statusText);
+                    alert('Message send error: ', res.statusText)
+                }
+                
+            })
+            .catch((err) => alert('Message send error: ', err))
         }
     }
 
