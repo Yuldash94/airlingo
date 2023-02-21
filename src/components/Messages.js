@@ -97,7 +97,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
         }
     }
     async function uploadAudioMessages(audioId) {
-        if (audioId ) {
+
             setLoading(true)
             await fetch(`${url}${topicId}/messages`, {
                 method: 'POST',
@@ -122,7 +122,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 
             })
             .catch((err) => alert('Message send error: ', err))
-        }
+        
     }
 
 

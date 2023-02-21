@@ -13,7 +13,7 @@ function RecordingAudio({setAudio, audio, baseUrl, uploadAudio}) {
         stopRecording,
         startRecording
       } = useMediaRecorder({
-        blobOptions: { type: 'audio/ogg' },
+        blobOptions: { type: 'audio/x-wav' },
         mediaStreamConstraints: { audio: true }
       });
       
