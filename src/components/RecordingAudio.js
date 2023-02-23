@@ -13,7 +13,7 @@ function RecordingAudio({setAudio, audio, baseUrl, uploadAudio}) {
         stopRecording,
         startRecording
       } = useMediaRecorder({
-        blobOptions: { type: 'audio/x-wav' },
+        blobOptions: { type: 'audio/mp3' },
         mediaStreamConstraints: { audio: true }
       });
       
@@ -27,11 +27,10 @@ function RecordingAudio({setAudio, audio, baseUrl, uploadAudio}) {
     const handleStopRecordAudio = () => {
         setRecording(false)
         stopRecording()
-
-
     }
     if (status === 'stopped' && mediaBlob) {
       setAudio(mediaBlob)
+
       let audioFile = new FormData() 
       if (audio !== mediaBlob && mediaBlob) {
           // console.log('mediaBlob:', mediaBlob);
@@ -41,6 +40,7 @@ function RecordingAudio({setAudio, audio, baseUrl, uploadAudio}) {
           // console.log('data2', audioFile.get('formFile'))
 
         }
+
     }
     if (error) {
         alert('An unexpected error has occurred, please try again...', error)

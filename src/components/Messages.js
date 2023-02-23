@@ -96,8 +96,23 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             loadMessages(topicId)
         }
     }
+    // async function uploadAudioMessages(audioId) {
+    //         setLoading(true)
+    //         await fetch(`${url}${topicId}/messages`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+    //                 Accept: 'application/json',
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body:  JSON.stringify({
+    //                 "audioId": `${audioId}`,
+    //             }),
+    //         }).then(()=> setLoading(false))
+    //         loadMessages(topicId)
+    // }
     async function uploadAudioMessages(audioId) {
-
+        if (audioId) {
             setLoading(true)
             await fetch(`${url}${topicId}/messages`, {
                 method: 'POST',
@@ -110,7 +125,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                     "audioId": `${audioId}`
                 }),
             })
-            .then((res)=>{ 
+            .then(res =>{ 
                 if (res.ok) {
                     setLoading(false)
                     loadMessages(topicId)
@@ -122,7 +137,7 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 
             })
             .catch((err) => alert('Message send error: ', err))
-        
+        }
     }
 
 
@@ -176,7 +191,6 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`,
             },
-
         })
         if (response.ok) {
             let result = await response.blob()
