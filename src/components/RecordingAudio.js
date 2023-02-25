@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { AiFillAudio, AiTwotoneAudio } from 'react-icons/ai'
 import useMediaRecorder from '@wmik/use-media-recorder';
 
-function RecordingAudio({setAudio, audio, baseUrl, uploadAudio}) {
+function RecordingAudio({setAudio, audio, uploadAudio}) {
 
     const [recording, setRecording] = useState(false)
 
@@ -13,7 +13,7 @@ function RecordingAudio({setAudio, audio, baseUrl, uploadAudio}) {
         stopRecording,
         startRecording
       } = useMediaRecorder({
-        blobOptions: { type: 'audio/mp3' },
+        blobOptions: { type: 'audio/mpeg; codecs=mp3' },
         mediaStreamConstraints: { audio: true }
       });
       
@@ -33,7 +33,7 @@ function RecordingAudio({setAudio, audio, baseUrl, uploadAudio}) {
 
       let audioFile = new FormData() 
       if (audio !== mediaBlob && mediaBlob) {
-          // console.log('mediaBlob:', mediaBlob);
+          console.log('mediaBlob:', mediaBlob);
           // console.log('data1', audioFile);
           audioFile.set("formFile", mediaBlob)
           uploadAudio(audioFile)

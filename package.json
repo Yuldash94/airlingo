@@ -11,6 +11,7 @@
     "gapi-script": "^1.2.0",
     "jwt-decode": "^3.1.2",
     "jwt-decoder": "^0.0.0",
+    "mic-recorder-to-mp3": "^2.2.2",
     "randomcolor": "^0.6.2",
     "react": "^18.2.0",
     "react-audio-voice-recorder": "^1.0.4",
@@ -24,6 +25,7 @@
     "react-simple-oauth2-login": "^0.5.4",
     "react-spinners": "^0.13.7",
     "react-textarea-autosize": "^8.4.0",
+    "vmsg": "^0.4.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

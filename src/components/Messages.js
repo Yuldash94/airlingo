@@ -13,7 +13,9 @@ import { Metrics } from './Metrics'
 import Continue from './Continue'
 import { Tips } from './Tips'
 import RecordingAudio from './RecordingAudio'
+import AudioRecording from './AudioRecording'
 import TextareaAutosize from 'react-textarea-autosize';
+import Mic from './Mic'
 
 
 
@@ -332,9 +334,10 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                     <div className='to_home' >
                         <Link to='/'> <TiHome/></Link>
                     </div>
-                    <div className='recording'>
-                        <RecordingAudio setAudio={setAudio} audio={audio} uploadAudio={uploadAudio} url={urlForAudio}/>
-                        {/* <AudioRecording setAudio={setAudio}/> */}
+                    <div className='recording_audio'>
+                        <RecordingAudio setAudio={setAudio} audio={audio} uploadAudio={uploadAudio}/>
+                        {/* <AudioRecording setAudio={setAudio} audio={audio} uploadAudio={uploadAudio}/> */}
+                        {/* <Mic setAudio={setAudio} audio={audio} uploadAudio={uploadAudio}/> */}
                     </div>
                     <div className='hint' onClick={() => {
                         handleMessageTips()
