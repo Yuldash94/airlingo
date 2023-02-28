@@ -134,11 +134,11 @@ export default function Messages( {user, token, greeting, setGreeting, topics, s
                 } else {
                     setLoading(false)
                     console.log(res.statusText);
-                    alert('Message send error: ', res.statusText)
+                    alert(`Message send error: ${audioId}`, audioId)
                 }
                 
             })
-            .catch((err) => alert('Message send error: ', err))
+            .catch((err) => alert(`Message send error: ${audioId}`))
         }
     }
 
